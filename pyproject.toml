@@ -15,3 +15,6 @@ target-version = ["py312"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+markers = [
+    "smoke: testes com APIs reais (nao roda no CI padrao)",
+]
