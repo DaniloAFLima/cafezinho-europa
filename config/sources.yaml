@@ -1,0 +1,46 @@
+# Cada fonte tem: url, language, name, default_category
+sources:
+  - name: bbc
+    url: https://feeds.bbci.co.uk/news/world/europe/rss.xml
+    language: en
+    default_category: Europa
+
+  - name: reuters_europe
+    url: https://www.reutersagency.com/feed/?best-regions=europe&post_type=best
+    language: en
+    default_category: Europa
+
+  - name: guardian_europe
+    url: https://www.theguardian.com/world/europe-news/rss
+    language: en
+    default_category: Europa
+
+  - name: svt_nyheter
+    url: https://www.svt.se/nyheter/rss.xml
+    language: sv
+    default_category: Suécia
+
+  - name: dn_se
+    url: https://www.dn.se/rss
+    language: sv
+    default_category: Suécia
+
+  - name: lemonde
+    url: https://www.lemonde.fr/rss/une.xml
+    language: fr
+    default_category: França
+
+  - name: spiegel
+    url: https://www.spiegel.de/international/index.rss
+    language: de
+    default_category: Alemanha
+
+  - name: elpais
+    url: https://feeds.elpais.com/mrss-s/pages/ep/site/elpais.com/portada
+    language: es
+    default_category: Espanha
+
+  - name: corriere
+    url: https://www.corriere.it/rss/homepage.xml
+    language: it
+    default_category: Itália

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+<title>Le Monde.fr - Actualités et Infos en France et dans le monde</title>
+<description>Le Monde.fr - 1er site d'information.</description>
+<link>https://www.lemonde.fr/rss/une.xml</link>
+<pubDate>Sat, 06 Jun 2026 09:27:23 +0000</pubDate>
+<language>fr</language>
+<atom:link href="https://www.lemonde.fr/rss/une.xml" rel="self" type="application/rss+xml"/>
+<item>
+<title><![CDATA[Bernadette Chirac, ancienne première dame, est morte à l'âge de 93 ans]]></title>
+<pubDate>Sat, 06 Jun 2026 10:54:28 +0200</pubDate>
+<description><![CDATA[Indéfectible soutien de la carrière de son mari, Bernadette Chodron de Courcel était devenue un personnage incontournable de la scène politique.]]></description>
+<guid isPermaLink="true">https://www.lemonde.fr/disparitions/article/2026/06/06/bernadette-chirac-ancienne-premiere-dame-est-morte-a-l-age-de-93-ans_6698105_3382.html</guid>
+<link>https://www.lemonde.fr/disparitions/article/2026/06/06/bernadette-chirac-ancienne-premiere-dame-est-morte-a-l-age-de-93-ans_6698105_3382.html</link>
+</item>
+<item>
+<title><![CDATA[En écrivant à Vladimir Poutine, Volodymyr Zelensky s'adresse aux élites russes, lassées de la guerre en Ukraine]]></title>
+<pubDate>Sat, 06 Jun 2026 05:00:06 +0200</pubDate>
+<description><![CDATA[Derrière la proposition d'une main tendue, la lettre du président ukrainien au chef du Kremlin cherche à exploiter les failles de Moscou et la lassitude des Russes après quatre années de guerre.]]></description>
+<guid isPermaLink="true">https://www.lemonde.fr/international/article/2026/06/06/en-ecrivant-a-vladimir-poutine-volodymyr-zelensky-s-adresse-aux-elites-russes-lassees-de-la-guerre-en-ukraine_6698071_3210.html</guid>
+<link>https://www.lemonde.fr/international/article/2026/06/06/en-ecrivant-a-vladimir-poutine-volodymyr-zelensky-s-adresse-aux-elites-russes-lassees-de-la-guerre-en-ukraine_6698071_3210.html</link>
+</item>
+<item>
+<title><![CDATA[EN DIRECT, Moyen-Orient : au Liban, l'armée annonce la mort de plusieurs de ses militaires dans une frappe israélienne]]></title>
+<pubDate>Sat, 06 Jun 2026 06:58:33 +0200</pubDate>
+<description><![CDATA[Dans la nuit de vendredi à samedi, l'Iran a tiré des missiles en direction de pays du Golfe.]]></description>
+<guid isPermaLink="true">https://www.lemonde.fr/international/live/2026/06/06/en-direct-moyen-orient-le-koweit-et-bahrein-vises-par-des-attaques-de-missiles-iraniens_6697888_3210.html</guid>
+<link>https://www.lemonde.fr/international/live/2026/06/06/en-direct-moyen-orient-le-koweit-et-bahrein-vises-par-des-attaques-de-missiles-iraniens_6697888_3210.html</link>
+</item>
+</channel>
+</rss>

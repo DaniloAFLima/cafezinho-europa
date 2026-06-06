@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title><![CDATA[BBC News]]></title>
+        <description><![CDATA[BBC News - Europe]]></description>
+        <link>https://www.bbc.co.uk/news/world/europe</link>
+        <image>
+            <url>https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif</url>
+            <title>BBC News</title>
+            <link>https://www.bbc.co.uk/news/world/europe</link>
+        </image>
+        <generator>RSS for Node</generator>
+        <lastBuildDate>Sat, 06 Jun 2026 09:27:39 GMT</lastBuildDate>
+        <atom:link href="https://feeds.bbci.co.uk/news/world/europe/rss.xml" rel="self" type="application/rss+xml"/>
+        <copyright><![CDATA[Copyright: (C) British Broadcasting Corporation, see https://www.bbc.co.uk/usingthebbc/terms-of-use/#15metadataandrssfeeds for terms and conditions of reuse.]]></copyright>
+        <language><![CDATA[en-gb]]></language>
+        <ttl>15</ttl>
+        <item>
+            <title><![CDATA[Putin says there is 'no point' meeting Zelensky over ending Ukraine war]]></title>
+            <description><![CDATA[The Russian president's refusal comes after his Ukrainian counterpart wrote an open letter calling for face-to-face talks.]]></description>
+            <link>https://www.bbc.com/news/articles/cpqpqx5qe40o?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/news/articles/cpqpqx5qe40o#0</guid>
+            <pubDate>Fri, 05 Jun 2026 18:16:15 GMT</pubDate>
+            <media:thumbnail width="240" height="135" url="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/3a6e/live/d52d0df0-6100-11f1-ae0d-afcc10479766.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Ukraine strikes cargo ships and admits Romania drone blast]]></title>
+            <description><![CDATA[Ukraine says it struck five ships carrying illegal cargo in the Sea of Azov and in coastal waters of Russian-occupied territories.]]></description>
+            <link>https://www.bbc.com/news/articles/c707098wkzpo?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/news/articles/c707098wkzpo#0</guid>
+            <pubDate>Fri, 05 Jun 2026 15:29:39 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/590d/live/6821ba00-60f9-11f1-8b8c-6d33e1d5abb6.jpg"/>
+        </item>
+        <item>
+            <title><![CDATA[Fury in France after child murder suspect's criminal record released]]></title>
+            <description><![CDATA[A man suspected of murdering an 11-year-old girl had previously been identified as a potential child molester, records show.]]></description>
+            <link>https://www.bbc.com/news/articles/c1424v7mk8go?at_medium=RSS&amp;at_campaign=rss</link>
+            <guid isPermaLink="false">https://www.bbc.com/news/articles/c1424v7mk8go#0</guid>
+            <pubDate>Fri, 05 Jun 2026 11:32:51 GMT</pubDate>
+            <media:thumbnail width="240" height="134" url="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/9a9e/live/a2a069a0-60cd-11f1-b808-9f0a293e0062.jpg"/>
+        </item>
+    </channel>
+</rss>
