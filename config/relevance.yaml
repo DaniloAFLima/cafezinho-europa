@@ -1,0 +1,63 @@
+# Configuração de score de relevância para brasileiros na Europa
+
+keywords_positivas:
+  # Imigração e vida na Europa
+  - brasileiro
+  - brasileira
+  - brasileiros
+  - brasil
+  - imigração
+  - imigrante
+  - visto
+  - cidadania
+  - residência
+  - schengen
+  # Trabalho/economia
+  - emprego
+  - mercado de trabalho
+  - salário
+  - inflação
+  - eurozona
+  # Política europeia
+  - união europeia
+  - parlamento europeu
+  - eleições europeias
+  # Inglês
+  - brazilian
+  - immigration
+  - visa
+  - citizenship
+  - eu citizenship
+  - schengen visa
+
+keywords_negativas:
+  # Esportes locais sem apelo internacional
+  - bundesliga
+  - serie a
+  - premier league
+  - allsvenskan
+  - ligue 1
+  # Celebridades regionais
+  - eurovision
+  - bachelorette
+
+pesos:
+  recencia_horas:
+    "<6": 1.0
+    "<12": 0.7
+    "<24": 0.4
+    "<48": 0.1
+  fonte:
+    bbc: 1.0
+    reuters_europe: 1.0
+    guardian_europe: 0.9
+    svt_nyheter: 0.8
+    dn_se: 0.8
+    lemonde: 0.8
+    spiegel: 0.8
+    elpais: 0.8
+    corriere: 0.7
+  keyword_positiva: 0.3
+  keyword_negativa: -0.5
+
+top_n: 10
