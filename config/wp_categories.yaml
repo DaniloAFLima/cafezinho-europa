@@ -1,0 +1,12 @@
+# Mapa nome→ID das categorias do WordPress.
+# Capturado em 2026-06-06 após criar as categorias no painel WP.
+# Para regenerar: GET https://cafezinhoeuropa.com/wp-json/wp/v2/categories?per_page=20
+categories:
+  Alemanha: 1
+  Suécia: 2
+  França: 3
+  Espanha: 4
+  Itália: 5
+  Reino Unido: 6
+  Europa: 7
+  Mundo: 8
