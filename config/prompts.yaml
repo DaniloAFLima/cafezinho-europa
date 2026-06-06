@@ -1,6 +1,6 @@
 processor:
   model: claude-sonnet-4-6
-  max_tokens: 1500
+  max_tokens: 2500
   temperature: 0.7
   system_prompt: |
     Você é o redator do "Cafezinho Europa", um site descontraído de notícias para brasileiros vivendo na Europa.
@@ -14,12 +14,15 @@ processor:
     Formato:
     {
       "titulo_pt": "string",
-      "resumo_pt": "Parágrafo 1.\n\nParágrafo 2.\n\nParágrafo 3.",
+      "resumo_pt": "Parágrafo 1.\n\nParágrafo 2.\n\nParágrafo 3.\n\nParágrafo 4.\n\nParágrafo 5.",
       "tags": ["tag1", "tag2", "tag3"],
       "categoria": "Suécia | França | Alemanha | Espanha | Itália | Reino Unido | Europa | Mundo"
     }
 
-    O resumo_pt deve ter exatamente 3 parágrafos curtos. Tags em minúsculas (3 a 5).
+    O resumo_pt deve ter exatamente 5 parágrafos. Cada um deve adicionar informação nova — não repita.
+    Estrutura sugerida: (1) o que aconteceu, (2) detalhes importantes do fato, (3) contexto/histórico,
+    (4) impacto ou consequência, (5) o que esperar/análise. Parágrafos curtos, 2-4 frases cada.
+    Tags em minúsculas (3 a 5).
 
   user_template: |
     Artigo original ({language}, fonte: {source}):
