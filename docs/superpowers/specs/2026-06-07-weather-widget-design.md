@@ -313,60 +313,109 @@ Roda em <2 segundos. Sem rede. Fixtures de Open-Meteo em `tests/fixtures/`.
 
 ### Conceito
 
-A barra é parte do "ritual da manhã" — leve, cálida, igual ao resto do site. Não é um widget meteorológico genérico azul.
+O widget **vive dentro do banner editorial** que `design/home.html` já estabeleceu — mesma linguagem das manchetes (broadsheet brasileiro). Não é um overlay escuro separado; é a versão dinâmica da linha `.banner__weather` que o mockup do site já reserva (`design/home.html:559`). Mockup interativo de referência: `design/weather-bar.html`.
 
-### Layout (desktop, ~40px de altura)
+### Layout (desktop)
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│ ☕ Tempo na Europa hoje   [🇬🇧] [🇫🇷] [🇩🇪] [🇪🇸] [🇮🇹] [🇸🇪]  │
-└─────────────────────────────────────────────────────────────────┘
-   ↓ aba ativa expande logo abaixo (slide suave, ~80px)
-┌─────────────────────────────────────────────────────────────────┐
-│ 🇫🇷 Paris    Hoje 18°/11° ☁️   Sáb 19°/12° 🌧   Dom 17°/10° ⛅  │
-└─────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────────┐
+│ Sábado, 07 de Junho          Edição 001 · Ano I       TEMPO HOJE  🇬🇧 14°  🇫🇷 22°  🇩🇪 19°  🇪🇸 28°  🇮🇹 26°  🇸🇪 14°  │
+└────────────────────────────────────────────────────────────────────────────────┘
+                                                                        ↓ clique numa bandeira
+                                                  ┌─────────────────────────────┐
+                                                  │ FR  Paris    Atualizado 07:12 │
+                                                  │ ─────────────────────────── │
+                                                  │ HOJE · SÁB    DOM       SEG  │
+                                                  │ 22°  11°     19°  12°   17° 10° │
+                                                  │ ☼  Sol entre  ☂ Pancadas  ⛅ Parc. │
+                                                  │    nuvens                    │
+                                                  │ ─────────────────────────── │
+                                                  │ Fonte · Open-Meteo   Ver semana → │
+                                                  └─────────────────────────────┘
+                                                          (dropdown ancorado;
+                                                           não desloca a página)
 ```
 
 ### Comportamento
 
-- País ativo padrão: se a página atual for categoria de país, abre nele; caso contrário, abre em Paris.
-- Clique em aba: expansão DOM instantânea (todos os dados já estão no HTML).
-- Reabrir mesma aba: colapsa (toggle).
-- Sem auto-rotação, sem JS pesado — só `classList.toggle`.
+- Estrip de 6 abas na coluna direita do banner — cada aba já mostra `bandeira + temperatura atual` (informação principal disponível ao primeiro olhar, sem precisar abrir nada).
+- Clique numa bandeira: dropdown ancorado abre/troca com os 3 dias da cidade. Posição absoluta, **não empurra a página**.
+- Clique na bandeira ativa: fecha o dropdown.
+- Clique fora do widget: fecha o dropdown.
+- País ativo padrão **no carregamento**: nenhum painel aberto (a barra inteira fica passiva). Esta é uma mudança em relação ao spec original — descobrimos no mockup que abrir um painel por default polui o banner.
+- Determinação do painel "destacado" (escolhido se o usuário clica num único toggle "Ver tempo"): se a página é categoria de país, usa esse país; senão, Paris (filtro `cafezinho_weather_default_city`).
 
-### Paleta (encaixa em `2026-06-06-cafezinho-europa-design.md`)
+### Paleta (variáveis do `design/home.html`)
 
-- Fundo da barra: `#3E2723` (expresso)
-- Texto: `#FAF6F0` (creme)
-- Aba ativa: realce em `#D7822F` (caramelo)
-- Ícones de tempo: SVG monocromáticos creme
+| Token | Valor | Uso no widget |
+|---|---|---|
+| `--bg` | `#FAF6F0` | Fundo do painel |
+| `--ink` | `#2A1812` | Bordas, temperaturas grandes, números |
+| `--ink-soft` | `#5A3F35` | Texto das labels nas abas |
+| `--ink-light` | `#8C6F62` | Meta-textos (supra, "atualizado às") |
+| `--line` | `#D7C8B8` | Divisores tracejados do painel |
+| `--caramelo-deep` | `#8C4F12` | Aba ativa, ícones de tempo, código de país |
+| `--crema` | `#EBD9C2` | Sombra deslocada do painel (efeito print) |
 
-### Tipografia
+### Tipografia (mesmas famílias do site)
 
-- Mesma sans-serif do corpo do site.
-- 13px na barra de abas.
-- 14px no painel expandido.
-- Temperatura em destaque visual maior (16px, peso medium).
+- **Fraunces** italic, SOFT 100, WONK 1, 28px — nome da cidade no painel (mesmo recurso da wordmark e dos hero titles).
+- **Fraunces** roman, SOFT 50, 26px, tabular-nums — temperatura máxima.
+- **Newsreader** italic, 12px — descrição do tempo ("Sol entre nuvens, brisa fraca").
+- **JetBrains Mono**, 9–11px, uppercase, letter-spacing 0.22em — todos os labels técnicos (supra "TEMPO HOJE", "ATUALIZADO", "HOJE · SÁB", "FONTE · OPEN-METEO").
 
 ### Bandeiras
 
-- SVGs reais (não emoji genérico).
-- ~18px, cantos suavemente arredondados.
-- Em `assets/flags/`: `gb.svg`, `fr.svg`, `de.svg`, `es.svg`, `it.svg`, `se.svg`.
+- 100% CSS via gradientes (mesma convenção que `design/home.html:234-251` já usa).
+- 18×12px com `border: 0.5px solid var(--ink-light)` + `border-radius: 1px` (look de carimbo/selo).
+- Sem assets externos: zero requisições de rede para imagens.
+
+### Ícones de tempo
+
+- SVG inline, `viewBox="0 0 24 24"`, `stroke="currentColor"`, `stroke-width="1.4"`, `stroke-linecap` e `stroke-linejoin="round"`.
+- Cor herdada via `currentColor` = `--caramelo-deep` no contexto do painel.
+- Feel "bico-de-pena": linha fina, sem preenchimentos sólidos.
+- 18×18px no painel.
+- Conjunto: `sun`, `sun-cloud`, `cloud`, `fog`, `drizzle`, `rain`, `shower`, `snow`, `thunder` (9 ícones, mesmos slugs do mapa WMO).
+
+### Descrição textual do tempo
+
+Cada código WMO mapeia para um par `(ícone, descrição curta em italic pt-BR)`. Exemplos:
+- 0 → ☼ "Sol pleno"
+- 1, 2 → ⛅ "Parcialmente nublado"
+- 3 → ☁ "Nublado"
+- 61–65 → ☂ "Chuva"
+- 80–82 → ☂ "Pancadas de chuva"
+- 95 → ⚡ "Trovoada"
+
+A descrição substitui a comunicação puramente numérica e reforça o tom conversacional do "cafezinho".
+
+### Detalhes característicos
+
+- **Pontinho caramel sob a aba ativa**: 6×6px, mesmo recurso do `nav.countries a.active::after` (`design/home.html:166-176`).
+- **Código de país no painel**: `<em>FR</em>Paris` em caps caramel — referência visual a carimbo postal.
+- **Sombra dupla do painel**: `14px 14px 0 -10px var(--crema), 16px 16px 0 -10px var(--ink)` — cria efeito de carta dupla impressa, mesmo idioma do `.seal::before` do home.
+- **Seta do dropdown**: pseudo-elemento 12×12px rotacionado 45° apontando para a aba.
+- **Divisores tracejados** (`border: 1px dashed var(--line)`) entre cabeçalho/dias/rodapé do painel.
+
+### Integração com o tema
+
+- Plugin expõe `cafezinho_render_weather_bar()` — função pública para o tema custom chamar **de dentro** da `div.banner` (substituindo o conteúdo estático atual de `.banner__weather`).
+- Em qualquer outro tema (default do WP durante desenvolvimento), o plugin auto-injeta uma `div.banner` completa via `wp_body_open` (com data, edição estática e o widget). Auto-injeção é desligável via filtro `cafezinho_weather_auto_banner` (= false) ou definindo `CAFEZINHO_WEATHER_NO_AUTO`.
 
 ### Mobile (<768px)
 
-- Barra mantém ícones de bandeira; oculta o texto "Tempo na Europa hoje".
-- Abas viram scroll horizontal se não couberem.
-- Painel expandido empilha verticalmente os 3 dias.
-- Altura total quando expandida: ~120px.
+- Banner inteiro vira coluna única centralizada (mesmo grid responsivo do home).
+- Strip oculta o supra "TEMPO HOJE"; bandeiras quebram em 2 linhas centradas.
+- Dropdown ancora ao centro do strip; `min-width: min(92vw, 360px)`.
+- Os 3 dias permanecem em grid 3-colunas (cabe em ~340px).
 
 ### Acessibilidade
 
-- Cada aba é `<button>` com `aria-label="Tempo em Paris"` e `aria-expanded`.
-- Painel com `role="region"` e `aria-live="polite"`.
-- Contraste WCAG AA (creme em expresso passa).
-- Funciona sem JS: por padrão renderiza o país default já expandido.
+- `role="tablist"` no strip, `role="tab"` em cada botão, com `aria-controls`, `aria-selected`, `aria-label="<cidade> <temp> graus"`.
+- Painel: `role="region"`, `aria-live="polite"`.
+- Contraste WCAG AA: ink `#2A1812` sobre creme `#FAF6F0` = 14:1 (passa AAA).
+- Funciona sem JS: por padrão nenhum painel aberto, mas as temperaturas atuais já estão visíveis nas abas (informação principal não depende de interatividade).
 
 ---
 
