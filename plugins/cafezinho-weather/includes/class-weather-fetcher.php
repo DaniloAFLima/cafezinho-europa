@@ -60,4 +60,58 @@ class Cafezinho_Weather_Fetcher {
             'forecast_days' => self::DAYS,
         ] );
     }
+
+    /**
+     * Busca dados de todas as cidades em paralelo.
+     * Cidades que falharem ficam ausentes do array devolvido (merge cuida do fallback).
+     *
+     * @param array<string, array{country:string,city:string,flag:string,lat:float,lon:float}> $cities
+     * @return array<string, array{country:string,city:string,flag:string,fetched_at:int,days:array}>
+     */
+    public static function fetch_all( array $cities ): array {
+        if ( ! class_exists( 'WpOrg\\Requests\\Requests' ) && ! class_exists( 'Requests' ) ) {
+            throw new RuntimeException( 'WordPress Requests library not available' );
+        }
+        $requests_class = class_exists( 'WpOrg\\Requests\\Requests' ) ? 'WpOrg\\Requests\\Requests' : 'Requests';
+
+        $requests = [];
+        foreach ( $cities as $slug => $cfg ) {
+            $requests[ $slug ] = [
+                'url'     => self::build_url( $cfg['lat'], $cfg['lon'] ),
+                'type'    => $requests_class::GET,
+                'options' => [ 'timeout' => self::TIMEOUT ],
+            ];
+        }
+
+        $responses = $requests_class::request_multiple( $requests );
+        $now       = time();
+        $out       = [];
+
+        foreach ( $responses as $slug => $resp ) {
+            $cfg = $cities[ $slug ];
+            try {
+                if ( $resp instanceof \Exception || $resp instanceof \Throwable ) {
+                    throw new RuntimeException( 'HTTP error: ' . $resp->getMessage() );
+                }
+                if ( $resp->status_code !== 200 ) {
+                    throw new RuntimeException( "HTTP {$resp->status_code} for {$cfg['city']}" );
+                }
+                $raw  = json_decode( $resp->body, true );
+                if ( ! is_array( $raw ) ) {
+                    throw new RuntimeException( "Invalid JSON for {$cfg['city']}" );
+                }
+                $days = self::parse_response( $raw );
+                $out[ $slug ] = [
+                    'country'    => $cfg['country'],
+                    'city'       => $cfg['city'],
+                    'flag'       => $cfg['flag'],
+                    'fetched_at' => $now,
+                    'days'       => $days,
+                ];
+            } catch ( Throwable $e ) {
+                error_log( '[cafezinho-weather] fetch failed for ' . $slug . ': ' . $e->getMessage() );
+            }
+        }
+        return $out;
+    }
 }
