@@ -11,6 +11,8 @@ services:
       - wp_data:/var/www/html
       # bind mount do tema custom — edita no host, vê no container
       - ./themes/cafezinho:/var/www/html/wp-content/themes/cafezinho
+      # bind mount do plugin de previsão do tempo
+      - ../plugins/cafezinho-weather:/var/www/html/wp-content/plugins/cafezinho-weather
     depends_on:
       - db
 
