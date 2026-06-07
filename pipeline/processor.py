@@ -43,6 +43,7 @@ class ProcessedArticle:
     source_url: str
     source_name: str
     cost_usd: float
+    image_url: str | None = None
 
 
 def load_config(path: str | Path = "config/prompts.yaml") -> dict[str, Any]:
@@ -122,4 +123,5 @@ async def process_article(
         source_url=article.url,
         source_name=article.source,
         cost_usd=cost,
+        image_url=article.image_url,
     )

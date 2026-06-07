@@ -32,6 +32,7 @@ class Article:
     published_at: datetime
     fetched_at: datetime
     default_category: str
+    image_url: str | None = None
 
 
 def load_sources(path: str | Path = "config/sources.yaml") -> list[Source]:

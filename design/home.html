@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Cafezinho Europa — Notícias da Europa em pt-BR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --bg-soft: #F2EBE0;
+  --ink: #2A1812;
+  --ink-soft: #5A3F35;
+  --ink-light: #8C6F62;
+  --line: #D7C8B8;
+  --caramelo: #B86A1C;
+  --caramelo-deep: #8C4F12;
+  --ouro: #A89160;
+  --crema: #EBD9C2;
+  --vermelho: #A8332B;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(184,106,28,0.04) 0%, transparent 35%),
+    radial-gradient(circle at 85% 75%, rgba(168,145,96,0.05) 0%, transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0 0.07 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif;
+  font-optical-sizing: auto;
+  font-size: 18px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ───── HEADER ───── */
+.banner {
+  border-bottom: 1px solid var(--ink);
+  padding: 14px 5vw;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+}
+.banner__date span { color: var(--caramelo-deep); font-weight: 500; }
+.banner__edition { text-align: center; }
+.banner__weather { text-align: right; }
+.banner__weather span { color: var(--caramelo-deep); }
+
+header.masthead {
+  text-align: center;
+  padding: 38px 5vw 22px;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+}
+
+.masthead__supra {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.wordmark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 700;
+  font-size: clamp(58px, 10vw, 140px);
+  line-height: 0.85;
+  letter-spacing: -0.05em;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  color: var(--ink);
+  display: inline-block;
+}
+.wordmark .accent {
+  color: var(--caramelo-deep);
+  display: block;
+}
+
+.masthead__rule {
+  width: clamp(200px, 30vw, 360px);
+  height: 1px;
+  background: var(--ink);
+  margin: 18px auto 10px;
+}
+
+.masthead__infra {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--caramelo-deep);
+}
+
+.seal {
+  position: absolute;
+  top: 28px;
+  right: 5vw;
+  width: 102px;
+  height: 102px;
+  border: 1.5px solid var(--caramelo-deep);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: var(--caramelo-deep);
+  transform: rotate(-8deg);
+  font-family: 'JetBrains Mono', monospace;
+  text-transform: uppercase;
+  text-align: center;
+}
+.seal::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed var(--caramelo-deep);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+.seal__text { font-size: 9px; letter-spacing: 0.15em; line-height: 1.15; }
+.seal__time {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 2px 0;
+  line-height: 1;
+}
+
+nav.countries {
+  border-bottom: 1px solid var(--ink);
+  padding: 12px 5vw;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+nav.countries a {
+  color: var(--ink);
+  text-decoration: none;
+  padding: 4px 22px;
+  border-right: 1px solid var(--line);
+  transition: color 0.2s;
+  position: relative;
+}
+nav.countries a:last-child { border-right: none; }
+nav.countries a:hover { color: var(--caramelo-deep); }
+nav.countries a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  background: var(--caramelo-deep);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+/* ───── HERO ───── */
+main { padding: 60px 5vw 80px; max-width: 1400px; margin: 0 auto; }
+
+.hero {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  margin-bottom: 80px;
+  padding-bottom: 60px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+
+.hero__image {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: linear-gradient(135deg, #3a2418 0%, #6b3d24 50%, #9b6c3e 100%);
+  overflow: hidden;
+}
+.hero__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05) saturate(0.9);
+}
+.hero__image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(42,24,18,0.35) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.stamp {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  background: var(--bg);
+  color: var(--ink);
+  padding: 6px 12px 6px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  border-left: 3px solid var(--caramelo-deep);
+}
+.stamp .flag {
+  width: 18px;
+  height: 12px;
+  display: inline-block;
+  border: 0.5px solid var(--ink-light);
+}
+.flag.fr { background: linear-gradient(to right, #002395 33%, #fff 33% 66%, #ED2939 66%); }
+.flag.se { background: linear-gradient(to bottom, #006AA7 40%, #FECC00 40% 60%, #006AA7 60%); position: relative; }
+.flag.de { background: linear-gradient(to bottom, #000 33%, #DD0000 33% 66%, #FFCE00 66%); }
+.flag.es { background: linear-gradient(to bottom, #C60B1E 25%, #FFC400 25% 75%, #C60B1E 75%); }
+.flag.it { background: linear-gradient(to right, #008C45 33%, #fff 33% 66%, #CD212A 66%); }
+.flag.uk { background: #012169; position: relative; }
+.flag.eu { background: #003399; position: relative; }
+.flag.eu::after {
+  content: '★';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFCC00;
+  font-size: 8px;
+  line-height: 1;
+}
+
+.hero__meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--caramelo-deep);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kicker::before {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: var(--caramelo-deep);
+}
+
+.hero__title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(36px, 4.2vw, 56px);
+  line-height: 1.0;
+  letter-spacing: -0.025em;
+  margin-bottom: 18px;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 15, "WONK" 0;
+}
+.hero__title em {
+  font-style: italic;
+  color: var(--caramelo-deep);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  font-weight: 600;
+}
+
+.hero__dek {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 26px;
+  font-weight: 400;
+}
+
+.byline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--ink-light);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.byline a {
+  color: var(--caramelo-deep);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+.byline .dot { color: var(--line); }
+
+/* ───── GRID ───── */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 36px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 24px;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 80;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.3;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 36px;
+}
+
+article.card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.card__image {
+  position: relative;
+  aspect-ratio: 4/3;
+  background: var(--bg-soft);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.card__image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.2,0.8,0.2,1);
+  filter: contrast(1.05) saturate(0.9);
+}
+.card:hover .card__image img { transform: scale(1.04); }
+
+.card__kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--caramelo-deep);
+  margin-bottom: 8px;
+}
+
+.card__title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.15;
+  letter-spacing: -0.018em;
+  margin-bottom: 10px;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 30;
+}
+.card__title em {
+  font-style: italic;
+  color: var(--caramelo-deep);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+.card__dek {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+
+.card__meta {
+  margin-top: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-light);
+  display: flex;
+  gap: 12px;
+}
+.card__meta .source {
+  color: var(--ink-soft);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+
+/* ───── DIVIDER ───── */
+.coffee-stain {
+  display: flex;
+  justify-content: center;
+  margin: 80px 0;
+  opacity: 0.45;
+}
+.coffee-stain svg { width: 80px; height: 80px; }
+
+/* ───── FOOTER ───── */
+footer {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 60px 5vw 30px;
+  margin-top: 80px;
+}
+.foot-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 60px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.foot-brand {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 1.2;
+  color: var(--crema);
+  margin-bottom: 14px;
+  font-variation-settings: "SOFT" 80;
+}
+.foot-brand .accent { color: var(--caramelo); font-weight: 500; }
+.foot-tag {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 15px;
+  color: var(--ouro);
+  max-width: 320px;
+  line-height: 1.5;
+}
+.foot-col h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ouro);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+.foot-col a {
+  display: block;
+  color: var(--crema);
+  text-decoration: none;
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 15px;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.foot-col a:hover { color: var(--caramelo); }
+
+.newsletter {
+  margin-top: 24px;
+  border: 1px solid var(--ink-soft);
+  display: flex;
+}
+.newsletter input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 14px;
+  color: var(--crema);
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 14px;
+  font-style: italic;
+}
+.newsletter input::placeholder { color: var(--ink-light); }
+.newsletter input:focus { outline: none; background: rgba(255,255,255,0.04); }
+.newsletter button {
+  background: var(--caramelo);
+  color: var(--ink);
+  border: none;
+  padding: 12px 18px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.newsletter button:hover { background: var(--ouro); color: var(--ink); }
+
+.foot-base {
+  max-width: 1400px;
+  margin: 60px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-light);
+}
+
+/* ───── ANIMATION ───── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero, .grid > *, .section-title { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) backwards; }
+.hero { animation-delay: 0.05s; }
+.section-title { animation-delay: 0.2s; }
+.grid > *:nth-child(1) { animation-delay: 0.25s; }
+.grid > *:nth-child(2) { animation-delay: 0.32s; }
+.grid > *:nth-child(3) { animation-delay: 0.39s; }
+.grid > *:nth-child(4) { animation-delay: 0.46s; }
+.grid > *:nth-child(5) { animation-delay: 0.53s; }
+.grid > *:nth-child(6) { animation-delay: 0.60s; }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; gap: 30px; }
+  .grid { grid-template-columns: 1fr; gap: 40px; }
+  .foot-grid { grid-template-columns: 1fr; gap: 36px; }
+  .seal { width: 70px; height: 70px; top: 14px; }
+  .seal__time { font-size: 19px; }
+  .seal__text { font-size: 7px; }
+  nav.countries { gap: 0; }
+  nav.countries a { padding: 4px 12px; font-size: 10px; }
+}
+</style>
+</head>
+<body>
+
+<!-- top banner -->
+<div class="banner">
+  <div class="banner__date">Sábado, <span>07 de Junho, 2026</span></div>
+  <div class="banner__edition">Edição 001 · Ano I</div>
+  <div class="banner__weather">Estocolmo 14° · Berlim 19° · <span>Paris 22°</span></div>
+</div>
+
+<!-- masthead -->
+<header class="masthead">
+  <div class="masthead__supra">Notícias da Europa</div>
+  <h1 class="wordmark">
+    Cafezinho<span class="accent">Europa</span>
+  </h1>
+  <div class="masthead__rule"></div>
+  <div class="masthead__infra">Servido todo dia às 07h</div>
+  <div class="seal">
+    <div class="seal__text">Servido<br>às</div>
+    <div class="seal__time">07h</div>
+    <div class="seal__text">UTC · diário</div>
+  </div>
+</header>
+
+<!-- nav -->
+<nav class="countries">
+  <a href="#" class="active">Manchete</a>
+  <a href="#">Suécia</a>
+  <a href="#">França</a>
+  <a href="#">Alemanha</a>
+  <a href="#">Espanha</a>
+  <a href="#">Itália</a>
+  <a href="#">Reino Unido</a>
+  <a href="#">Europa</a>
+  <a href="#">Mundo</a>
+</nav>
+
+<main>
+  <!-- HERO -->
+  <article class="hero">
+    <div class="hero__image">
+      <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1200" alt="">
+      <div class="stamp"><span class="flag se"></span> Suécia</div>
+    </div>
+    <div class="hero__meta">
+      <div class="kicker">Manchete do Dia · 6 min com seu café</div>
+      <h2 class="hero__title">Festival Brännbollsyran vira <em>caso de polícia</em> em Umeå</h2>
+      <p class="hero__dek">
+        O que era pra ser uma noite de música no norte da Suécia terminou com várias agressões investigadas — e a polícia chama atenção pro caos na frente do palco. A gente conta o que aconteceu, e por que isso interessa pra brasileiro que mora na região.
+      </p>
+      <div class="byline">
+        <span>Resumo do Cafezinho</span>
+        <span class="dot">•</span>
+        <span>Fonte: <a href="#">SVT Nyheter</a></span>
+        <span class="dot">•</span>
+        <span>Há 2 horas</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- GRID 1 -->
+  <h3 class="section-title">Servido fresquinho</h3>
+  <div class="grid">
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=600" alt="">
+        <div class="stamp"><span class="flag fr"></span> França</div>
+      </div>
+      <div class="card__kicker">Política · 4 min</div>
+      <h2 class="card__title">Eleições municipais agitam <em>Paris</em>: o que muda pra quem mora lá</h2>
+      <p class="card__dek">O primeiro turno teve surpresas que mexem com o cotidiano da cidade. Quem mora ali precisa saber.</p>
+      <div class="card__meta"><span>Há 4h</span> · <span class="source">Le Monde</span></div>
+    </article>
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600" alt="">
+        <div class="stamp"><span class="flag de"></span> Alemanha</div>
+      </div>
+      <div class="card__kicker">Trabalho · 5 min</div>
+      <h2 class="card__title">Berlim aprova nova lei pra <em>trabalhador estrangeiro</em></h2>
+      <p class="card__dek">Brasileiros que estão de olho em vaga na Alemanha podem se interessar pelo que mudou — e o que ficou mais fácil.</p>
+      <div class="card__meta"><span>Há 5h</span> · <span class="source">Der Spiegel</span></div>
+    </article>
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=600" alt="">
+        <div class="stamp"><span class="flag es"></span> Espanha</div>
+      </div>
+      <div class="card__kicker">Cultura · 3 min</div>
+      <h2 class="card__title">Madri vira "capital da saudade" no fim de semana</h2>
+      <p class="card__dek">Festival reúne brasileiros e portugueses em três dias de música, comida e abraço apertado.</p>
+      <div class="card__meta"><span>Há 6h</span> · <span class="source">El País</span></div>
+    </article>
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600" alt="">
+        <div class="stamp"><span class="flag it"></span> Itália</div>
+      </div>
+      <div class="card__kicker">Economia · 5 min</div>
+      <h2 class="card__title">Inflação na Itália desacelera pelo terceiro mês seguido</h2>
+      <p class="card__dek">Bom sinal pra quem vai ao mercado — mas custo de moradia continua sendo o vilão do orçamento.</p>
+      <div class="card__meta"><span>Há 7h</span> · <span class="source">Corriere</span></div>
+    </article>
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=600" alt="">
+        <div class="stamp"><span class="flag uk"></span> Reino Unido</div>
+      </div>
+      <div class="card__kicker">Imigração · 6 min</div>
+      <h2 class="card__title">Novo <em>skilled worker visa</em>: o que brasileiro precisa saber</h2>
+      <p class="card__dek">Mudanças no visto vão exigir salário maior. Vale a pena explicar agora pra quem está se programando.</p>
+      <div class="card__meta"><span>Há 9h</span> · <span class="source">BBC News</span></div>
+    </article>
+
+    <article class="card">
+      <div class="card__image">
+        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600" alt="">
+        <div class="stamp"><span class="flag eu"></span> Europa</div>
+      </div>
+      <div class="card__kicker">Continente · 4 min</div>
+      <h2 class="card__title">Parlamento Europeu fecha acordo sobre <em>IA</em></h2>
+      <p class="card__dek">A nova regra afeta apps que você usa todo dia. Resumimos o que sai, o que entra e o que ainda está no fogo.</p>
+      <div class="card__meta"><span>Há 11h</span> · <span class="source">Reuters</span></div>
+    </article>
+
+  </div>
+
+  <!-- Decorative coffee stain divider -->
+  <div class="coffee-stain">
+    <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="40" cy="40" r="32" fill="none" stroke="#B86A1C" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="40" cy="40" r="28" fill="none" stroke="#B86A1C" stroke-width="0.8" opacity="0.3"/>
+      <circle cx="40" cy="40" r="34" fill="none" stroke="#B86A1C" stroke-width="0.4" opacity="0.2" stroke-dasharray="2 1"/>
+    </svg>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-brand">Cafezinho <span class="accent">Europa</span></div>
+      <div class="foot-tag">
+        Notícias da Europa em português do Brasil, servidas fresquinhas todo dia às 07h. Como aquele cafezinho que você toma antes de encarar o mundo.
+      </div>
+      <div class="newsletter">
+        <input type="email" placeholder="seu@email.com">
+        <button>Assinar</button>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Editoria</h4>
+      <a href="#">Sobre o site</a>
+      <a href="#">Como funciona</a>
+      <a href="#">Política editorial</a>
+      <a href="#">Contato</a>
+    </div>
+    <div class="foot-col">
+      <h4>Países</h4>
+      <a href="#">Suécia</a>
+      <a href="#">França</a>
+      <a href="#">Alemanha</a>
+      <a href="#">Espanha</a>
+      <a href="#">Itália</a>
+      <a href="#">Reino Unido</a>
+    </div>
+    <div class="foot-col">
+      <h4>Siga</h4>
+      <a href="#">Newsletter diária</a>
+      <a href="#">Instagram</a>
+      <a href="#">Telegram</a>
+      <a href="#">RSS</a>
+    </div>
+  </div>
+  <div class="foot-base">
+    <div>© 2026 Cafezinho Europa · Conteúdo agregado de fontes citadas</div>
+    <div>Servido com ❤ em pt-BR</div>
+  </div>
+</footer>
+
+</body>
+</html>

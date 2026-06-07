@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Festival Brännbollsyran vira caso de polícia — Cafezinho Europa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,0..100,0..1;1,9..144,300..900,0..100,0..1&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF6F0;
+  --bg-soft: #F2EBE0;
+  --ink: #2A1812;
+  --ink-soft: #5A3F35;
+  --ink-light: #8C6F62;
+  --line: #D7C8B8;
+  --caramelo: #B86A1C;
+  --caramelo-deep: #8C4F12;
+  --ouro: #A89160;
+  --crema: #EBD9C2;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.15 0 0 0 0 0.1 0 0 0 0 0.07 0 0 0 0.025 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* ───── compact header for post page ───── */
+.banner {
+  border-bottom: 1px solid var(--ink);
+  padding: 12px 5vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-soft);
+}
+.banner__brand {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 18px;
+  text-transform: none;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 80, "WONK" 1;
+  text-decoration: none;
+}
+.banner__brand .accent { color: var(--caramelo-deep); }
+.banner__nav { display: flex; gap: 22px; }
+.banner__nav a { color: var(--ink-soft); text-decoration: none; }
+.banner__nav a:hover { color: var(--caramelo-deep); }
+
+/* ───── ARTICLE HEADER ───── */
+article.post { max-width: 100%; margin: 0; }
+
+.post-hero {
+  position: relative;
+  width: 100%;
+  height: clamp(360px, 55vh, 560px);
+  overflow: hidden;
+  background: #2a1812;
+}
+.post-hero img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05) saturate(0.9) brightness(0.85);
+}
+.post-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(42,24,18,0.6) 0%, rgba(42,24,18,0.1) 40%);
+}
+
+.post-hero__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 50px 5vw 60px;
+  color: var(--bg);
+  z-index: 2;
+}
+
+.post-hero .stamp {
+  background: var(--bg);
+  color: var(--ink);
+  padding: 7px 14px 7px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  border-left: 3px solid var(--caramelo-deep);
+  width: fit-content;
+  margin-bottom: 22px;
+}
+.post-hero .stamp .flag {
+  width: 20px; height: 14px;
+  background: linear-gradient(to bottom, #006AA7 40%, #FECC00 40% 60%, #006AA7 60%);
+  display: inline-block;
+}
+
+.post-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(40px, 6vw, 78px);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: var(--bg);
+  max-width: 1100px;
+  font-variation-settings: "SOFT" 30, "WONK" 1;
+  margin-bottom: 20px;
+}
+.post-title em {
+  font-style: italic;
+  color: var(--ouro);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+}
+
+.post-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--crema);
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.post-meta .dot { opacity: 0.5; }
+.post-meta strong { color: var(--bg); font-weight: 500; }
+
+/* ───── BODY ───── */
+.post-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 5vw 60px;
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+/* drop cap */
+.post-body p:first-of-type::first-letter {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-size: 92px;
+  line-height: 0.82;
+  float: left;
+  margin: 8px 14px -5px 0;
+  color: var(--caramelo-deep);
+  font-variation-settings: "SOFT" 50, "WONK" 1;
+}
+
+.post-body p {
+  margin-bottom: 24px;
+}
+
+.post-body p:nth-of-type(2)::first-line {
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+}
+
+/* pull quote */
+.pull-quote {
+  margin: 50px -40px;
+  padding: 32px 40px;
+  border-left: 4px solid var(--caramelo-deep);
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.3;
+  color: var(--ink-soft);
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  position: relative;
+}
+.pull-quote::before {
+  content: '"';
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 80px;
+  position: absolute;
+  top: 8px;
+  left: 14px;
+  color: var(--caramelo);
+  opacity: 0.3;
+  font-weight: 700;
+}
+
+/* ───── SOURCE ATTRIBUTION (legal/critical) ───── */
+.source-attrib {
+  margin-top: 70px;
+  padding: 30px 32px;
+  background: var(--bg-soft);
+  border-left: 4px solid var(--caramelo-deep);
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.source-attrib__icon {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--caramelo-deep);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg);
+}
+.source-attrib__icon svg { width: 22px; height: 22px; color: var(--caramelo-deep); }
+.source-attrib__content { flex: 1; }
+.source-attrib__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--caramelo-deep);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.source-attrib__name {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+  font-variation-settings: "SOFT" 30;
+}
+.source-attrib__link {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 15px;
+  color: var(--caramelo-deep);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  font-style: italic;
+}
+
+/* ───── TAGS ───── */
+.tags {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.tags__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink-light);
+  margin-right: 6px;
+}
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: lowercase;
+  letter-spacing: 0.04em;
+  background: transparent;
+  color: var(--ink-soft);
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.tag:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+/* ───── newsletter inline ───── */
+.inline-newsletter {
+  margin: 70px 0 0;
+  padding: 36px 36px;
+  background: var(--ink);
+  color: var(--bg);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.inline-newsletter::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border: 1px solid var(--caramelo);
+  border-radius: 50%;
+  opacity: 0.2;
+}
+.inline-newsletter::after {
+  content: '';
+  position: absolute;
+  bottom: -50px; left: -50px;
+  width: 180px; height: 180px;
+  border: 1px dashed var(--ouro);
+  border-radius: 50%;
+  opacity: 0.15;
+}
+.inline-newsletter h3 {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 30px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  font-variation-settings: "SOFT" 80, "WONK" 1;
+  color: var(--crema);
+}
+.inline-newsletter h3 .accent { color: var(--caramelo); font-weight: 500; }
+.inline-newsletter p {
+  font-family: 'Newsreader', serif;
+  font-size: 15px;
+  color: var(--ouro);
+  margin-bottom: 22px;
+  max-width: 460px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.inline-newsletter form {
+  display: flex;
+  max-width: 460px;
+  margin: 0 auto;
+  border: 1px solid var(--ink-soft);
+  position: relative;
+  z-index: 2;
+  background: var(--ink);
+}
+.inline-newsletter input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 13px 16px;
+  color: var(--crema);
+  font-family: 'Newsreader', serif;
+  font-size: 15px;
+  font-style: italic;
+}
+.inline-newsletter input::placeholder { color: var(--ink-light); }
+.inline-newsletter input:focus { outline: none; background: rgba(255,255,255,0.04); }
+.inline-newsletter button {
+  background: var(--caramelo);
+  color: var(--ink);
+  border: none;
+  padding: 13px 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* ───── RELATED ───── */
+.related {
+  max-width: 1200px;
+  margin: 90px auto 0;
+  padding: 0 5vw;
+}
+.related-title {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 32px;
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--ink);
+  font-variation-settings: "SOFT" 80;
+}
+.related-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.3;
+}
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.rel-card { display: flex; flex-direction: column; text-decoration: none; color: var(--ink); }
+.rel-card__image {
+  aspect-ratio: 16/10;
+  background: var(--bg-soft);
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+}
+.rel-card__image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: contrast(1.05) saturate(0.9);
+}
+.rel-card .stamp {
+  background: var(--bg);
+  color: var(--ink);
+  padding: 4px 10px 4px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  border-left: 2px solid var(--caramelo-deep);
+  position: absolute;
+  top: 12px;
+  left: 12px;
+}
+.rel-card .flag { width: 14px; height: 10px; display: inline-block; }
+.rel-card__title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+  font-variation-settings: "SOFT" 30;
+}
+.rel-card__meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--ink-light);
+  margin-top: auto;
+}
+
+/* ───── FOOTER simplified ───── */
+footer {
+  background: var(--ink);
+  color: var(--ouro);
+  padding: 40px 5vw 30px;
+  margin-top: 100px;
+  text-align: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+footer .brand {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-size: 24px;
+  text-transform: none;
+  letter-spacing: -0.015em;
+  color: var(--crema);
+  display: block;
+  margin-bottom: 14px;
+  font-variation-settings: "SOFT" 80, "WONK" 1;
+}
+footer .brand .accent { color: var(--caramelo); }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.post-hero__overlay { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) backwards 0.1s; }
+.post-body p { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) backwards; }
+.post-body p:nth-of-type(1) { animation-delay: 0.2s; }
+.post-body p:nth-of-type(2) { animation-delay: 0.28s; }
+.post-body p:nth-of-type(3) { animation-delay: 0.36s; }
+.post-body p:nth-of-type(4) { animation-delay: 0.44s; }
+.post-body p:nth-of-type(5) { animation-delay: 0.52s; }
+
+@media (max-width: 900px) {
+  .post-title { font-size: clamp(32px, 8vw, 48px); }
+  .related-grid { grid-template-columns: 1fr; }
+  .pull-quote { margin: 36px 0; font-size: 22px; }
+  .post-body p:first-of-type::first-letter { font-size: 68px; }
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <a href="#" class="banner__brand">Cafezinho <span class="accent">Europa</span></a>
+  <div class="banner__nav">
+    <a href="#">Suécia</a><a href="#">França</a><a href="#">Alemanha</a><a href="#">Espanha</a><a href="#">Itália</a><a href="#">Reino Unido</a><a href="#">Europa</a>
+  </div>
+</div>
+
+<article class="post">
+
+  <div class="post-hero">
+    <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1800" alt="">
+    <div class="post-hero__overlay">
+      <div class="stamp"><span class="flag"></span> Suécia · Umeå</div>
+      <h1 class="post-title">Festival Brännbollsyran vira <em>caso de polícia</em>: brigas e agressões na frente do palco</h1>
+      <div class="post-meta">
+        <strong>Servido às 07h</strong>
+        <span class="dot">·</span>
+        <span>Sábado, 07/06/2026</span>
+        <span class="dot">·</span>
+        <span>6 minutos com seu café</span>
+        <span class="dot">·</span>
+        <span>Fonte: SVT Nyheter</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="post-body">
+
+    <p>O festival Brännbollsyran, realizado em Umeå, na Suécia, terminou com vários casos de agressão sendo investigados pela polícia. A maioria dos incidentes aconteceu bem na área mais movimentada, na frente do palco.</p>
+
+    <p>Segundo a polícia, os episódios de violência ocorreram no meio da multidão que se concentrava próxima ao palco principal do evento. O número exato de ocorrências não foi divulgado, mas a polícia confirmou que são múltiplos casos.</p>
+
+    <div class="pull-quote">
+      As agressões chamaram a atenção das autoridades justamente por terem acontecido em uma área com muita gente, o que dificulta tanto a identificação dos envolvidos quanto a coleta de provas.
+    </div>
+
+    <p>O Brännbollsyran é um festival de música popular na cidade de Umeå, no norte da Suécia, conhecido por reunir grandes públicos e por ter um clima descontraído e festivo. Acontece todo verão e atrai gente de toda a região norte do país.</p>
+
+    <p>As investigações seguem em andamento. Por enquanto, a polícia não informou se há suspeitos identificados ou se houve prisões relacionadas aos casos. A cidade aguarda atualizações nas próximas semanas.</p>
+
+    <!-- Source attribution (essencial por direitos autorais) -->
+    <div class="source-attrib">
+      <div class="source-attrib__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+      </div>
+      <div class="source-attrib__content">
+        <div class="source-attrib__label">Esse resumo é uma adaptação de</div>
+        <div class="source-attrib__name">SVT Nyheter</div>
+        <a class="source-attrib__link" href="https://www.svt.se/nyheter/lokalt/vasterbotten/valdsamt-framfor-brannbollsyrans-scen-flera-blev-misshandlade" target="_blank" rel="noopener nofollow">Leia o artigo original em sueco →</a>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tags__label">Marcado com</span>
+      <a href="#" class="tag">suécia</a>
+      <a href="#" class="tag">festival</a>
+      <a href="#" class="tag">umeå</a>
+      <a href="#" class="tag">polícia</a>
+      <a href="#" class="tag">cultura</a>
+    </div>
+
+    <div class="inline-newsletter">
+      <h3>Não perca o <span class="accent">cafezinho de amanhã</span></h3>
+      <p>Receba todo dia às 07h um resumo das principais notícias da Europa em português, direto no seu email. De graça.</p>
+      <form>
+        <input type="email" placeholder="seu@email.com">
+        <button>Quero o cafezinho</button>
+      </form>
+    </div>
+
+  </div>
+
+  <!-- related -->
+  <div class="related">
+    <h3 class="related-title">Também na mesa de hoje</h3>
+    <div class="related-grid">
+      <a class="rel-card" href="#">
+        <div class="rel-card__image">
+          <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?w=600" alt="">
+          <div class="stamp"><span class="flag" style="background: linear-gradient(to bottom, #C60B1E 25%, #FFC400 25% 75%, #C60B1E 75%);"></span> Espanha</div>
+        </div>
+        <div class="rel-card__title">Madri vira "capital da saudade" no fim de semana</div>
+        <div class="rel-card__meta">Cultura · 3 min · El País</div>
+      </a>
+      <a class="rel-card" href="#">
+        <div class="rel-card__image">
+          <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?w=600" alt="">
+          <div class="stamp"><span class="flag" style="background: linear-gradient(to bottom, #000 33%, #DD0000 33% 66%, #FFCE00 66%);"></span> Alemanha</div>
+        </div>
+        <div class="rel-card__title">Berlim aprova nova lei pra trabalhador estrangeiro</div>
+        <div class="rel-card__meta">Trabalho · 5 min · Der Spiegel</div>
+      </a>
+      <a class="rel-card" href="#">
+        <div class="rel-card__image">
+          <img src="https://images.unsplash.com/photo-1486299267070-83823f5448dd?w=600" alt="">
+          <div class="stamp"><span class="flag" style="background: #012169;"></span> Reino Unido</div>
+        </div>
+        <div class="rel-card__title">Novo skilled worker visa: o que brasileiro precisa saber</div>
+        <div class="rel-card__meta">Imigração · 6 min · BBC News</div>
+      </a>
+    </div>
+  </div>
+
+</article>
+
+<footer>
+  <span class="brand">Cafezinho <span class="accent">Europa</span></span>
+  <div>© 2026 · Servido com ❤ em pt-BR · Notícias da Europa, todo dia às 07h</div>
+</footer>
+
+</body>
+</html>

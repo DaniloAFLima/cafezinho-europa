@@ -13,7 +13,8 @@ from dotenv import load_dotenv
 
 from pipeline.db import Database, ArticleStatus
 from pipeline.dedupe import filter_unseen
-from pipeline.fetcher import fetch_all, load_sources
+from pipeline.fetcher import Article, fetch_all, load_sources
+from pipeline.og_image import fetch_og_images_batch
 from pipeline.processor import (
     ProcessorError,
     ProcessedArticle,
@@ -80,6 +81,22 @@ async def run_pipeline(
         relevance_cfg = load_relevance_config("config/relevance.yaml")
         top = select_top(novos, relevance_cfg)
         logger.info("Selecionados top %d por relevancia", len(top))
+
+        # 3.5. Buscar imagem og:image de cada artigo selecionado (em paralelo)
+        og_images = await fetch_og_images_batch([a.url for a in top])
+        com_qtd = sum(1 for v in og_images.values() if v)
+        logger.info("Imagens og:image encontradas em %d/%d artigos", com_qtd, len(top))
+        # substitui cada artigo por uma versão com image_url preenchida
+        top = [
+            Article(
+                url=a.url, source=a.source, language=a.language,
+                title=a.title, content=a.content,
+                published_at=a.published_at, fetched_at=a.fetched_at,
+                default_category=a.default_category,
+                image_url=og_images.get(a.url),
+            )
+            for a in top
+        ]
 
         # 4. Processar
         prompts_cfg = load_prompts_config("config/prompts.yaml")

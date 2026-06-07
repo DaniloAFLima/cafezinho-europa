@@ -107,3 +107,128 @@ async def test_publish_erro_401_levanta(publisher):
     with patch("httpx.AsyncClient", return_value=client_mock):
         with pytest.raises(Exception, match="401"):
             await publisher.publish(_make_processed())
+
+
+def _make_processed_com_imagem() -> ProcessedArticle:
+    return ProcessedArticle(
+        titulo_pt="Com imagem",
+        resumo_pt="p1.\n\np2.\n\np3.",
+        tags=["t"], categoria="Europa",
+        source_url="https://bbc.com/x", source_name="bbc",
+        cost_usd=0.01,
+        image_url="https://bbc.com/img/hero.jpg",
+    )
+
+
+@pytest.mark.asyncio
+async def test_publish_com_imagem_upload_sucesso(publisher):
+    """Quando image_url existe, deve baixar, fazer upload e setar featured_media."""
+    fake_image_bytes = b"\xff\xd8\xff" + b"x" * 5000  # fake JPEG bytes (>1000)
+
+    chamadas = {"get": [], "post": []}
+
+    async def fake_get(url, **kwargs):
+        chamadas["get"].append(url)
+        r = MagicMock()
+        r.status_code = 200
+        r.content = fake_image_bytes
+        r.headers = {"content-type": "image/jpeg"}
+        return r
+
+    async def fake_post(url, **kwargs):
+        chamadas["post"].append(url)
+        r = MagicMock()
+        r.status_code = 201
+        if "/media" in url and url.endswith("/media"):
+            r.json = MagicMock(return_value={"id": 99, "source_url": "https://wp/img.jpg"})
+        elif "/media/" in url:
+            # update alt_text — só responde OK
+            r.json = MagicMock(return_value={"id": 99})
+        elif "/posts" in url:
+            chamadas["payload"] = kwargs.get("json")
+            r.json = MagicMock(return_value={"id": 42, "link": "https://wp/post"})
+        return r
+
+    client_mock = MagicMock()
+    client_mock.__aenter__ = AsyncMock(return_value=client_mock)
+    client_mock.__aexit__ = AsyncMock(return_value=False)
+    client_mock.get = AsyncMock(side_effect=fake_get)
+    client_mock.post = AsyncMock(side_effect=fake_post)
+
+    with patch("httpx.AsyncClient", return_value=client_mock):
+        result = await publisher.publish(_make_processed_com_imagem())
+
+    # baixou a imagem
+    assert "https://bbc.com/img/hero.jpg" in chamadas["get"]
+    # fez upload + criou post (e talvez update de alt_text)
+    media_calls = [u for u in chamadas["post"] if "/media" in u and not u.endswith("media")]
+    assert any("/wp/v2/media" in u for u in chamadas["post"])
+    # post final usa featured_media
+    assert chamadas["payload"]["featured_media"] == 99
+    assert result.featured_media_id == 99
+
+
+@pytest.mark.asyncio
+async def test_publish_imagem_404_publica_sem_featured(publisher):
+    """Se imagem retorna 404, publica post normalmente sem featured_media."""
+    async def fake_get(url, **kwargs):
+        r = MagicMock()
+        r.status_code = 404
+        return r
+
+    chamadas_post = []
+
+    async def fake_post(url, **kwargs):
+        chamadas_post.append((url, kwargs.get("json")))
+        r = MagicMock()
+        r.status_code = 201
+        r.json = MagicMock(return_value={"id": 1, "link": "x"})
+        return r
+
+    client_mock = MagicMock()
+    client_mock.__aenter__ = AsyncMock(return_value=client_mock)
+    client_mock.__aexit__ = AsyncMock(return_value=False)
+    client_mock.get = AsyncMock(side_effect=fake_get)
+    client_mock.post = AsyncMock(side_effect=fake_post)
+
+    with patch("httpx.AsyncClient", return_value=client_mock):
+        result = await publisher.publish(_make_processed_com_imagem())
+
+    # post foi criado normalmente
+    posts = [c for c in chamadas_post if "/wp/v2/posts" in c[0]]
+    assert len(posts) == 1
+    # mas sem featured_media (imagem falhou)
+    assert "featured_media" not in posts[0][1]
+    assert result.featured_media_id is None
+    assert result.wp_post_id == 1
+
+
+@pytest.mark.asyncio
+async def test_publish_sem_image_url_pula_upload(publisher):
+    """Se image_url é None, nem tenta baixar imagem."""
+    chamadas_get = []
+
+    async def fake_get(url, **kwargs):
+        chamadas_get.append(url)
+        r = MagicMock()
+        r.status_code = 200
+        return r
+
+    async def fake_post(url, **kwargs):
+        r = MagicMock()
+        r.status_code = 201
+        r.json = MagicMock(return_value={"id": 1, "link": "x"})
+        return r
+
+    client_mock = MagicMock()
+    client_mock.__aenter__ = AsyncMock(return_value=client_mock)
+    client_mock.__aexit__ = AsyncMock(return_value=False)
+    client_mock.get = AsyncMock(side_effect=fake_get)
+    client_mock.post = AsyncMock(side_effect=fake_post)
+
+    with patch("httpx.AsyncClient", return_value=client_mock):
+        result = await publisher.publish(_make_processed())  # sem image_url
+
+    # nenhum GET pra baixar imagem
+    assert chamadas_get == []
+    assert result.featured_media_id is None
