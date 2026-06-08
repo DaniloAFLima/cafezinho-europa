@@ -19,9 +19,11 @@
         <div class="banner__edition">
             Servido todo dia às 07h UTC
         </div>
-        <div class="banner__motto">
-            <em>Notícias da Europa, em português</em>
-        </div>
+        <?php if ( function_exists( 'cafezinho_render_weather_bar' ) ) : ?>
+            <?php cafezinho_render_weather_bar(); ?>
+        <?php else : ?>
+            <div class="banner__motto"><em>Notícias da Europa, em português</em></div>
+        <?php endif; ?>
     </div>
 
     <!-- masthead grande (só na home) -->
@@ -52,7 +54,11 @@
             </a>
         </div>
         <div class="banner__edition"><?php echo esc_html(cafezinho_banner_data()); ?></div>
-        <div class="banner__motto"><em>Notícias da Europa, em português</em></div>
+        <?php if ( function_exists( 'cafezinho_render_weather_bar' ) ) : ?>
+            <?php cafezinho_render_weather_bar(); ?>
+        <?php else : ?>
+            <div class="banner__motto"><em>Notícias da Europa, em português</em></div>
+        <?php endif; ?>
     </div>
 
 <?php endif; ?>

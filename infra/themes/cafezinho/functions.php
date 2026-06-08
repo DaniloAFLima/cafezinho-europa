@@ -106,6 +106,13 @@ add_filter('excerpt_more', 'cafezinho_excerpt_more');
 remove_action('wp_head', 'print_emoji_detection_script', 7);
 remove_action('wp_print_styles', 'print_emoji_styles');
 
+/* ───── Weather widget: integração no banner do tema ─────
+   O plugin cafezinho-weather injeta um banner próprio via wp_body_open
+   quando nenhum tema o integra. Como o header.php deste tema já chama
+   cafezinho_render_weather_bar() dentro do .banner, desligamos o
+   auto-inject para não duplicar o banner no topo da página. */
+add_filter('cafezinho_weather_auto_banner', '__return_false');
+
 /* ───── Banner com data atual + clima fake (decorativo) ───── */
 function cafezinho_banner_data() {
     $dias = ['Domingo', 'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];

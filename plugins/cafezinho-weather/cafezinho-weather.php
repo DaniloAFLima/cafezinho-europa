@@ -72,8 +72,7 @@ function cafezinho_weather_render_fallback_banner(): void {
     if ( ! cafezinho_weather_should_auto_inject() ) {
         return;
     }
-    wp_enqueue_style( 'cafezinho-weather' );
-    wp_enqueue_script( 'cafezinho-weather' );
+    // CSS/JS são enfileirados por Cafezinho_Weather_Widget::render() (idempotente).
 
     $months = [ '', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro' ];

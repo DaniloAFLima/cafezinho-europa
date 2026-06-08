@@ -30,3 +30,6 @@ Thumbs.db
 plugins/cafezinho-weather/vendor/
 plugins/cafezinho-weather/.phpunit.cache/
 plugins/cafezinho-weather/composer.lock
+
+# Local-only docker-compose override (dev port mapping)
+infra/docker-compose.override.yml

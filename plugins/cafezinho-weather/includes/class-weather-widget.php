@@ -8,6 +8,13 @@ class Cafezinho_Weather_Widget {
     public const DEFAULT_CITY = 'paris';
 
     public static function render(): void {
+        // Garante CSS/JS do widget mesmo quando o tema chama a função
+        // diretamente (auto-inject desligado). wp_enqueue_* é idempotente.
+        if ( function_exists( 'wp_enqueue_style' ) ) {
+            wp_enqueue_style( 'cafezinho-weather' );
+            wp_enqueue_script( 'cafezinho-weather' );
+        }
+
         $cached = Cafezinho_Weather_Cache::get();
         if ( $cached === null || empty( $cached['cities'] ) ) {
             self::render_placeholder();
