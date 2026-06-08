@@ -1,0 +1,310 @@
+/* ============================================================
+   Cafezinho Weather widget — editorial visual
+   Mirrors design/weather-bar.html. Token fallbacks let the
+   widget render correctly even when host theme does not
+   define the design system custom properties.
+   ============================================================ */
+
+.cw {
+    --cw-bg:            var(--bg, #FAF6F0);
+    --cw-ink:           var(--ink, #2A1812);
+    --cw-ink-soft:      var(--ink-soft, #5A3F35);
+    --cw-ink-light:     var(--ink-light, #8C6F62);
+    --cw-line:          var(--line, #D7C8B8);
+    --cw-line-soft:     var(--line-soft, #E3D5C2);
+    --cw-caramelo-deep: var(--caramelo-deep, #8C4F12);
+    --cw-crema:         var(--crema, #EBD9C2);
+
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-self: end;
+    text-align: right;
+    color: var(--cw-ink-soft);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.cw__strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.cw__supra {
+    margin-right: 14px;
+    color: var(--cw-ink-light);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    position: relative;
+    padding-right: 14px;
+}
+.cw__supra::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 11px;
+    background: var(--cw-line);
+}
+.cw__supra--solo { padding-right: 0; }
+.cw__supra--solo::after { display: none; }
+
+.cw__tab {
+    appearance: none;
+    background: transparent;
+    border: none;
+    padding: 4px 2px 6px;
+    margin: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 11px;
+    color: var(--cw-ink-soft);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.18s ease;
+    border-radius: 0;
+}
+.cw__tab + .cw__tab { margin-left: 4px; }
+.cw__tab:hover { color: var(--cw-ink); }
+.cw__tab .flag {
+    width: 18px;
+    height: 12px;
+    display: inline-block;
+    border: 0.5px solid var(--cw-ink-light);
+    border-radius: 1px;
+    transition: transform 0.18s ease;
+}
+.cw__tab:hover .flag { transform: translateY(-1px); }
+.cw__tab .cw__temp {
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--cw-ink);
+}
+.cw__tab.is-active { color: var(--cw-caramelo-deep); }
+.cw__tab.is-active .cw__temp { color: var(--cw-caramelo-deep); }
+.cw__tab.is-active::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -3px;
+    width: 6px;
+    height: 6px;
+    background: var(--cw-caramelo-deep);
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+/* Flag gradients (same convention as design/home.html) */
+.cw .flag.uk,
+.cw .flag.gb { background: #012169; position: relative; overflow: hidden; }
+.cw .flag.uk::before,
+.cw .flag.gb::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(45deg,  transparent 45%, #fff 45% 55%, transparent 55%),
+        linear-gradient(-45deg, transparent 45%, #fff 45% 55%, transparent 55%);
+}
+.cw .flag.uk::after,
+.cw .flag.gb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, transparent 42%, #C8102E 42% 58%, transparent 58%),
+        linear-gradient(0deg,  transparent 42%, #C8102E 42% 58%, transparent 58%);
+}
+.cw .flag.fr { background: linear-gradient(to right,  #002395 33%, #fff 33% 66%, #ED2939 66%); }
+.cw .flag.de { background: linear-gradient(to bottom, #000    33%, #DD0000 33% 66%, #FFCE00 66%); }
+.cw .flag.es { background: linear-gradient(to bottom, #C60B1E 25%, #FFC400 25% 75%, #C60B1E 75%); }
+.cw .flag.it { background: linear-gradient(to right,  #008C45 33%, #fff 33% 66%, #CD212A 66%); }
+.cw .flag.se {
+    background: linear-gradient(to bottom, #006AA7 40%, #FECC00 40% 60%, #006AA7 60%);
+    position: relative;
+}
+.cw .flag.se::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 30%, #FECC00 30% 42%, transparent 42%);
+}
+
+/* Dropdown panel */
+.cw__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 360px;
+    background: var(--cw-bg);
+    border: 1px solid var(--cw-ink);
+    padding: 22px 26px 20px;
+    text-align: left;
+    z-index: 50;
+    transform-origin: top right;
+    opacity: 0;
+    transform: translateY(-6px) scale(0.985);
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.22s cubic-bezier(0.16,1,0.3,1);
+    box-shadow:
+        0 1px 0 var(--cw-ink),
+        14px 14px 0 -10px var(--cw-crema),
+        16px 16px 0 -10px var(--cw-ink);
+}
+.cw__panel[data-open="true"] {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+}
+.cw__panel::before {
+    content: '';
+    position: absolute;
+    top: -7px;
+    right: 24px;
+    width: 12px;
+    height: 12px;
+    background: var(--cw-bg);
+    border-left: 1px solid var(--cw-ink);
+    border-top:  1px solid var(--cw-ink);
+    transform: rotate(45deg);
+}
+
+.cw__panel-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--cw-line);
+    margin-bottom: 16px;
+}
+.cw__panel-city {
+    font-family: 'Fraunces', Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 100, "WONK" 1;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--cw-ink);
+    letter-spacing: -0.01em;
+}
+.cw__panel-city em {
+    font-style: normal;
+    color: var(--cw-caramelo-deep);
+    margin-right: 6px;
+    letter-spacing: 0;
+}
+.cw__panel-meta {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--cw-ink-light);
+}
+
+.cw__days {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+.cw__day {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: relative;
+}
+.cw__day + .cw__day::before {
+    content: '';
+    position: absolute;
+    left: -9px;
+    top: 4px;
+    bottom: 4px;
+    width: 1px;
+    background: var(--cw-line-soft);
+}
+.cw__day-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--cw-ink-light);
+}
+.cw__day-temps {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    font-variation-settings: "SOFT" 50, "WONK" 0;
+    font-size: 26px;
+    line-height: 1;
+    color: var(--cw-ink);
+    font-variant-numeric: tabular-nums;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+.cw__day-temps .min  { font-size: 14px; color: var(--cw-ink-light); font-weight: 400; }
+.cw__day-temps .deg  { font-size: 16px; vertical-align: top; color: var(--cw-caramelo-deep); }
+.cw__day-desc {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Newsreader', Georgia, serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--cw-ink-soft);
+    margin-top: 2px;
+}
+.cw__day-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--cw-caramelo-deep);
+}
+
+.cw__panel-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--cw-line);
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--cw-ink-light);
+}
+.cw__panel-foot a {
+    color: var(--cw-caramelo-deep);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 1px;
+}
+
+/* Placeholder while cache is cold */
+.cw--placeholder { font-style: italic; }
+
+/* Mobile */
+@media (max-width: 768px) {
+    .cw { align-items: center; justify-self: center; text-align: center; }
+    .cw__supra { display: none; }
+    .cw__strip { flex-wrap: wrap; justify-content: center; gap: 2px 8px; }
+    .cw__panel {
+        right: 50%;
+        transform: translateX(50%) translateY(-6px) scale(0.985);
+        min-width: min(92vw, 360px);
+    }
+    .cw__panel[data-open="true"] {
+        transform: translateX(50%) translateY(0) scale(1);
+    }
+    .cw__panel::before {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%) rotate(45deg);
+    }
+}
