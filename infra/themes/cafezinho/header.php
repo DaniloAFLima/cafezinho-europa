@@ -31,7 +31,7 @@
         <div class="masthead__supra">Notícias da Europa</div>
         <h1 class="wordmark">
             <a href="<?php echo esc_url(home_url('/')); ?>">
-                Cafezinho<span class="accent">Europa</span>
+                Cafez<span class="wm-steam-i">i<svg class="wm-steam" viewBox="0 0 20 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="s1" d="M6 32 Q2 22 6 14 Q10 6 6 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="s2" d="M14 32 Q18 22 14 14 Q10 6 14 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>nho<span class="accent">Europa</span>
             </a>
         </h1>
         <div class="masthead__rule"></div>

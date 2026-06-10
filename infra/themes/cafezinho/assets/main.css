@@ -89,6 +89,34 @@ header.masthead {
 .wordmark a { color: inherit; text-decoration: none; }
 .wordmark .accent { color: var(--caramelo-deep); display: block; }
 
+/* Fumaça no "i" do wordmark */
+.wm-steam-i {
+  position: relative;
+  display: inline-block;
+}
+.wm-steam {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0.62em;
+  width: 0.18em;
+  height: 0.28em;
+  overflow: visible;
+  pointer-events: none;
+  opacity: 0.55;
+}
+.wm-steam .s1 {
+  animation: steam-rise 2.4s ease-out infinite;
+}
+.wm-steam .s2 {
+  animation: steam-rise 2.4s ease-out infinite 1.2s;
+}
+@keyframes steam-rise {
+  0%   { opacity: 0;   transform: translateY(0.06em)  scaleX(0.9); }
+  25%  { opacity: 0.8; }
+  100% { opacity: 0;   transform: translateY(-0.22em) scaleX(1.3); }
+}
+
 .masthead__rule {
   width: clamp(200px, 30vw, 360px);
   height: 1px;
