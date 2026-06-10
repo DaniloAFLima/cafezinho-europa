@@ -28,14 +28,14 @@
 
     <!-- masthead grande (só na home) -->
     <header class="masthead">
-        <svg class="masthead__watermark" viewBox="0 0 130 145" fill="none" aria-hidden="true">
-            <ellipse cx="58" cy="124" rx="54" ry="8" stroke="currentColor" stroke-width="2.5"/>
-            <path d="M16 44 L100 44 L91 110 Q58 126 25 110 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M16 44 Q58 36 100 44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-            <path d="M91 58 Q118 58 118 80 Q118 102 91 102" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-        </svg>
         <div class="masthead__supra">Notícias da Europa</div>
         <h1 class="wordmark">
+            <svg class="masthead__watermark" viewBox="0 0 130 145" fill="none" aria-hidden="true">
+                <ellipse cx="58" cy="124" rx="54" ry="8" stroke="currentColor" stroke-width="2.5"/>
+                <path d="M16 44 L100 44 L91 110 Q58 126 25 110 Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="M16 44 Q58 36 100 44" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M91 58 Q118 58 118 80 Q118 102 91 102" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
             <a href="<?php echo esc_url(home_url('/')); ?>">
                 Cafezinho<span class="accent">Europa</span>
             </a>
