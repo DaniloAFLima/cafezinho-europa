@@ -3,7 +3,7 @@
 > Arquivo de memória do projeto. Registra o que foi construído, decisões tomadas,
 > incidentes resolvidos e próximos passos. Atualizar a cada sessão de trabalho.
 >
-> **Última atualização:** 2026-06-08
+> **Última atualização:** 2026-06-10
 
 ---
 
@@ -169,10 +169,36 @@ Servidor 167.233.58.224
 
 ---
 
+## Sessão 5 — Página de contato + experimentos de logo
+
+### O que foi feito
+
+- **Página de contato** (`/contato`) criada e deployada:
+  - Template `infra/themes/cafezinho/page-contato.php` — 4 seções editoriais
+  - E-mail `cafezinhoeuropa@gmail.com` com link `mailto:`
+  - CSS dedicado em `main.css` com estilo editorial consistente
+  - Página criada no banco WordPress via SQL (ID 100, slug `contato`)
+- **WP_APP_PASSWORD** confirmado inválido — usuário `cafezinho-bot` sem permissão para criar páginas via REST API
+
+### Experimentos de logo (todos revertidos)
+
+Tentativas de adicionar elemento gráfico ao wordmark, todas revertidas ao original:
+1. Fumaça substituindo ponto do "i" — difícil de posicionar sem ver ao vivo
+2. Xícara como marca d'água atrás do wordmark — problema de z-index/posicionamento
+
+**Lição:** Para iterações visuais no logo, criar `design/logo-watermark.html` local primeiro e validar no browser antes de deployar.
+
+### Estado final
+
+- Site original restaurado — wordmark "Cafezinho Europa" limpo
+- Página `/contato` funcionando com template dedicado
+
+---
+
 ## Próximos passos
 
-- [ ] QA visual completo do site com gstack browse (Node.js já instalado)
-- [ ] Verificar se `WP_APP_PASSWORD` do usuário `cafezinho_pipeline` está válido no servidor
+- [ ] Ideia de logo: criar `design/logo-watermark.html` para iterar localmente (xícara marca d'água)
+- [ ] Renovar `WP_APP_PASSWORD` para o usuário `cafezinho-bot` no painel WordPress
 - [ ] Guardar senhas do servidor em password manager
 - [ ] Phase B do widget de tempo — afinar visual e responsividade
-- [ ] Monitorar primeiros runs do pipeline no servidor (ver `logs/pipeline-*.log`)
+- [ ] Monitorar runs do pipeline no servidor (`logs/pipeline-*.log`)
