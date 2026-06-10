@@ -90,6 +90,27 @@ header.masthead {
 .wordmark .accent { color: var(--caramelo-deep); display: block; }
 
 
+.masthead__watermark {
+  position: absolute;
+  width: clamp(180px, 22vw, 300px);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%);
+  opacity: 0.06;
+  color: var(--caramelo);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.masthead__supra,
+.wordmark,
+.masthead__rule,
+.masthead__infra,
+.seal {
+  position: relative;
+  z-index: 1;
+}
+
 .masthead__rule {
   width: clamp(200px, 30vw, 360px);
   height: 1px;
