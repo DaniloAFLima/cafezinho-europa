@@ -89,7 +89,7 @@ header.masthead {
 .wordmark a { color: inherit; text-decoration: none; }
 .wordmark .accent { color: var(--caramelo-deep); display: block; }
 
-/* Fumaça substituindo o ponto do "i" no wordmark */
+/* Fumaça no "i" do wordmark */
 .wm-steam-i {
   position: relative;
   display: inline-block;
@@ -98,25 +98,22 @@ header.masthead {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: 0.58em;     /* ancora o círculo-ponto na posição correta */
-  width: 0.13em;
-  height: 0.38em;     /* altura suficiente pra o vapor subir */
-  overflow: visible;
+  bottom: 0.6em;
+  width: 0.1em;
+  height: 0.18em;
+  overflow: hidden;
   pointer-events: none;
-}
-.wm-dot {
-  opacity: 0.85;      /* ponto sempre visível como substituto natural */
 }
 .wm-steam path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
 }
-.wm-steam .s1 { animation: steam-draw 3.2s ease-out infinite 0.4s; }
-.wm-steam .s2 { animation: steam-draw 3.2s ease-out infinite 1.9s; }
+.wm-steam .s1 { animation: steam-draw 2.6s ease-out infinite; }
+.wm-steam .s2 { animation: steam-draw 2.6s ease-out infinite 1.3s; }
 @keyframes steam-draw {
   0%   { stroke-dashoffset: 1; opacity: 0; }
-  12%  { opacity: 0.38; }
-  78%  { stroke-dashoffset: 0; opacity: 0.2; }
+  15%  { opacity: 0.65; }
+  75%  { stroke-dashoffset: 0; opacity: 0.45; }
   100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
