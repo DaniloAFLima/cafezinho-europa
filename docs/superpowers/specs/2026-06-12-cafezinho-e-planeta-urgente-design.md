@@ -211,8 +211,12 @@ domingo 08:00 UTC:
 - **Conversão Markdown→HTML** no `cronica.py` (biblioteca `markdown` do PyPI).
 - **Categoria nova no WP:** "Cafezinho & Planeta, Urgente!" — criar no painel e
   mapear em `config/wp_categories.yaml`.
-- **Imagem destacada fixa:** uma capa única da coluna (media_id configurável),
-  reutilizada toda edição. Identidade visual consistente; pode evoluir depois.
+- **Imagem destacada fixa:** uma capa única da coluna, reutilizada toda edição
+  (media_id em config). Subir a capa ao WP e configurar o media_id é tarefa da
+  implementação; se nenhum media_id estiver configurado, o post é criado sem
+  imagem destacada (não é erro).
+- **"Próximo domingo"** = o domingo estritamente futuro mais próximo, 08:00 UTC.
+  Se o comando rodar num domingo, agenda para o domingo seguinte.
 
 ---
 
