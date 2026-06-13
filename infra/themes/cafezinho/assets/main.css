@@ -201,13 +201,42 @@ main.site-main {
 .flag.de { background: linear-gradient(to bottom, #000 33%, #DD0000 33% 66%, #FFCE00 66%); }
 .flag.es { background: linear-gradient(to bottom, #C60B1E 25%, #FFC400 25% 75%, #C60B1E 75%); }
 .flag.it { background: linear-gradient(to right, #008C45 33%, #fff 33% 66%, #CD212A 66%); }
-.flag.uk { background: #012169; }
-.flag.eu { background: #003399; position: relative; }
+.flag.uk {
+  background:
+    /* St George - cruz vermelha central */
+    linear-gradient(to right, transparent 43%, #C8102E 43% 57%, transparent 57%),
+    linear-gradient(to bottom, transparent 38%, #C8102E 38% 62%, transparent 62%),
+    /* St George - borda branca da cruz */
+    linear-gradient(to right, transparent 37%, #FFF 37% 63%, transparent 63%),
+    linear-gradient(to bottom, transparent 30%, #FFF 30% 70%, transparent 70%),
+    /* St Andrew - X diagonal branco */
+    linear-gradient(to bottom right, transparent 44%, #FFF 44% 56%, transparent 56%),
+    linear-gradient(to bottom left, transparent 44%, #FFF 44% 56%, transparent 56%),
+    #012169;
+}
+.flag.eu { background: #003399; position: relative; overflow: hidden; }
 .flag.eu::after {
-  content: '★';
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  color: #FFCC00; font-size: 8px; line-height: 1;
+  /* 12 estrelas em círculo via box-shadow */
+  content: '';
+  position: absolute;
+  width: 1.5px; height: 1.5px;
+  background: #FFCC00;
+  border-radius: 50%;
+  top: calc(50% - 0.75px);
+  left: calc(50% - 0.75px);
+  box-shadow:
+    0px -4px 0 0 #FFCC00,
+    2px -3.5px 0 0 #FFCC00,
+    3.5px -2px 0 0 #FFCC00,
+    4px 0px 0 0 #FFCC00,
+    3.5px 2px 0 0 #FFCC00,
+    2px 3.5px 0 0 #FFCC00,
+    0px 4px 0 0 #FFCC00,
+    -2px 3.5px 0 0 #FFCC00,
+    -3.5px 2px 0 0 #FFCC00,
+    -4px 0px 0 0 #FFCC00,
+    -3.5px -2px 0 0 #FFCC00,
+    -2px -3.5px 0 0 #FFCC00;
 }
 .flag.world { background: linear-gradient(135deg, #003399 0%, #008C45 50%, #B86A1C 100%); }
 
