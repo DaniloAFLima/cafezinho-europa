@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cafezinho & Planeta, Urgente! — Ícone</title>
+  <style>
+    body {
+      background: #f5f0e8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Georgia, serif;
+      gap: 40px;
+    }
+    h2 { color: #2A1812; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; margin: 0; }
+    .variantes { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .variante { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .label { font-size: 11px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+
+<h2>Cafezinho &amp; Planeta, Urgente! — Variantes do ícone</h2>
+
+<div class="variantes">
+
+  <!-- VERSÃO PRINCIPAL: GRANDE -->
+  <div class="variante">
+    <svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="globeClip">
+          <circle cx="200" cy="200" r="118"/>
+        </clipPath>
+      </defs>
+
+      <!-- Fundo creme -->
+      <rect width="400" height="400" fill="#fdf6e3"/>
+
+      <!-- Sombra do globo -->
+      <ellipse cx="204" cy="324" rx="90" ry="14" fill="#2A1812" opacity="0.12"/>
+
+      <!-- Globo — preenchimento -->
+      <circle cx="200" cy="200" r="118" fill="#fff8f0"/>
+
+      <!-- Linhas de latitude -->
+      <g clip-path="url(#globeClip)" stroke="#c8a882" stroke-width="1.2" fill="none" opacity="0.6">
+        <ellipse cx="200" cy="200" rx="118" ry="28"/>
+        <ellipse cx="200" cy="200" rx="118" ry="62"/>
+        <ellipse cx="200" cy="200" rx="118" ry="98"/>
+        <line x1="82" y1="200" x2="318" y2="200"/>
+        <line x1="200" y1="82" x2="200" y2="318"/>
+        <!-- Meridianos inclinados -->
+        <path d="M200,82 Q250,200 200,318"/>
+        <path d="M200,82 Q150,200 200,318"/>
+        <path d="M200,82 Q280,200 200,318"/>
+        <path d="M200,82 Q120,200 200,318"/>
+      </g>
+
+      <!-- Borda do globo -->
+      <circle cx="200" cy="200" r="118" fill="none" stroke="#2A1812" stroke-width="3"/>
+
+      <!-- ====== SÍMBOLOS DOS PERSONAGENS ====== -->
+
+      <!-- 🌶️ PEDRINHO DO MUNDO — Garrafa térmica (Brasil) — TOPO -->
+      <g transform="translate(200, 54)">
+        <circle r="28" fill="#2A1812"/>
+        <!-- Garrafa térmica simplificada -->
+        <rect x="-8" y="-14" width="16" height="22" rx="3" fill="#fdf6e3"/>
+        <rect x="-6" y="8" width="12" height="5" rx="1" fill="#c8a882"/>
+        <rect x="-4" y="-16" width="8" height="4" rx="1" fill="#fdf6e3"/>
+        <!-- Vapor -->
+        <path d="M-5,-18 Q-3,-22 -5,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/>
+        <path d="M0,-18 Q2,-22 0,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/>
+        <path d="M5,-18 Q3,-22 5,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/>
+        <!-- Flag verde-amarela minúscula -->
+        <rect x="3" y="-8" width="7" height="5" rx="0.5" fill="#009c3b"/>
+        <polygon points="3,-8 6.5,-5.5 3,-3" fill="#ffdf00"/>
+      </g>
+
+      <!-- 🎧 RAJ DAS PLANILHAS — Fone de ouvido (Índia) — DIREITA -->
+      <g transform="translate(346, 200)">
+        <circle r="28" fill="#FF6B00"/>
+        <!-- Fone -->
+        <path d="M-10,-10 Q0,-20 10,-10" stroke="#fdf6e3" stroke-width="2.5" fill="none"/>
+        <!-- Abafadores -->
+        <rect x="-13" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/>
+        <rect x="6" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/>
+        <!-- Microfone -->
+        <line x1="6" y1="0" x2="12" y2="8" stroke="#fdf6e3" stroke-width="1.5"/>
+        <circle cx="13" cy="9" r="2.5" fill="#fdf6e3"/>
+        <!-- Ponto de interrogação "quem fala?" -->
+        <text x="0" y="17" text-anchor="middle" fill="#fdf6e3" font-size="12" font-weight="bold">?</text>
+      </g>
+
+      <!-- 🇸🇪 LARS LAGOM — Xícara fika (Suécia) — BAIXO DIREITA -->
+      <g transform="translate(308, 308)">
+        <circle r="28" fill="#006AA7"/>
+        <!-- Xícara -->
+        <path d="M-10,-2 Q-10,12 0,14 Q10,12 10,-2 Z" fill="#fdf6e3"/>
+        <!-- Pires -->
+        <ellipse cx="0" cy="14" rx="13" ry="4" fill="#fdf6e3"/>
+        <!-- Alça -->
+        <path d="M10,2 Q18,2 18,8 Q18,14 10,12" stroke="#fdf6e3" stroke-width="2" fill="none"/>
+        <!-- Cruz sueca amarela na xícara -->
+        <line x1="-5" y1="5" x2="5" y2="5" stroke="#FECC02" stroke-width="2"/>
+        <line x1="0" y1="0" x2="0" y2="10" stroke="#FECC02" stroke-width="2"/>
+      </g>
+
+      <!-- 🇵🇱 ZBIG — Camisa (Polônia) — BAIXO ESQUERDA -->
+      <g transform="translate(92, 308)">
+        <circle r="28" fill="#DC143C"/>
+        <!-- Camisa simples -->
+        <path d="M-12,-10 L-6,-4 L0,-8 L6,-4 L12,-10 L14,14 L-14,14 Z" fill="#fdf6e3"/>
+        <!-- Gola -->
+        <path d="M-6,-4 L0,0 L6,-4" stroke="#DC143C" stroke-width="1.5" fill="none"/>
+        <!-- Botão + mancha (a camisa usada) -->
+        <circle cx="0" cy="4" r="1.5" fill="#aaa"/>
+        <circle cx="0" cy="0" r="1.5" fill="#aaa"/>
+        <!-- Detalhe de "usada" — vinco na manga -->
+        <line x1="-14" y1="-4" x2="-10" y2="8" stroke="#c8a882" stroke-width="1" opacity="0.5"/>
+      </g>
+
+      <!-- 🤖 CAFETEIRA 3000 — Máquina de café (Centro/Todos) — ESQUERDA -->
+      <g transform="translate(54, 200)">
+        <circle r="28" fill="#555"/>
+        <!-- Corpo da cafeteira -->
+        <rect x="-9" y="-13" width="18" height="20" rx="3" fill="#ddd"/>
+        <!-- Visor/tela -->
+        <rect x="-6" y="-10" width="12" height="8" rx="1" fill="#00ff88" opacity="0.9"/>
+        <!-- Texto na tela -->
+        <text x="0" y="-4" text-anchor="middle" fill="#000" font-size="4" font-family="monospace">3000</text>
+        <!-- Xícara embaixo -->
+        <rect x="-5" y="8" width="10" height="7" rx="1" fill="#fdf6e3"/>
+        <path d="M5,10 Q9,10 9,13 Q9,15 5,15" stroke="#fdf6e3" stroke-width="1.2" fill="none"/>
+        <!-- Olhinhos digitais -->
+        <rect x="-5" y="-7" width="3" height="2" rx="0.5" fill="#00ff88" opacity="0.5"/>
+        <rect x="2" y="-7" width="3" height="2" rx="0.5" fill="#00ff88" opacity="0.5"/>
+      </g>
+
+      <!-- ====== TÍTULO ====== -->
+      <!-- Faixa de título -->
+      <rect x="30" y="332" width="340" height="40" rx="4" fill="#2A1812"/>
+
+      <!-- Texto principal -->
+      <text x="200" y="350" text-anchor="middle"
+            fill="#fdf6e3" font-family="Georgia, serif"
+            font-size="13" font-weight="bold" letter-spacing="0.5">
+        CAFEZINHO &amp; PLANETA,
+      </text>
+      <text x="200" y="364" text-anchor="middle"
+            fill="#c8a882" font-family="Georgia, serif"
+            font-size="11" letter-spacing="3">
+        URGENTE!
+      </text>
+
+      <!-- Linha decorativa acima do título -->
+      <line x1="50" y1="330" x2="350" y2="330" stroke="#2A1812" stroke-width="2"/>
+
+      <!-- Pontinhos decorativos nos cantos do estilo jornal -->
+      <rect x="30" y="20" width="6" height="6" fill="#2A1812" opacity="0.3"/>
+      <rect x="364" y="20" width="6" height="6" fill="#2A1812" opacity="0.3"/>
+    </svg>
+    <span class="label">Versão principal (400px)</span>
+  </div>
+
+  <!-- VERSÃO THUMBNAIL 200px -->
+  <div class="variante">
+    <svg width="200" height="200" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <clipPath id="globeClip2">
+          <circle cx="200" cy="200" r="118"/>
+        </clipPath>
+      </defs>
+      <rect width="400" height="400" fill="#fdf6e3"/>
+      <ellipse cx="204" cy="324" rx="90" ry="14" fill="#2A1812" opacity="0.12"/>
+      <circle cx="200" cy="200" r="118" fill="#fff8f0"/>
+      <g clip-path="url(#globeClip2)" stroke="#c8a882" stroke-width="1.2" fill="none" opacity="0.6">
+        <ellipse cx="200" cy="200" rx="118" ry="28"/>
+        <ellipse cx="200" cy="200" rx="118" ry="62"/>
+        <ellipse cx="200" cy="200" rx="118" ry="98"/>
+        <line x1="82" y1="200" x2="318" y2="200"/>
+        <line x1="200" y1="82" x2="200" y2="318"/>
+        <path d="M200,82 Q250,200 200,318"/>
+        <path d="M200,82 Q150,200 200,318"/>
+        <path d="M200,82 Q280,200 200,318"/>
+        <path d="M200,82 Q120,200 200,318"/>
+      </g>
+      <circle cx="200" cy="200" r="118" fill="none" stroke="#2A1812" stroke-width="3"/>
+      <g transform="translate(200, 54)"><circle r="28" fill="#2A1812"/><rect x="-8" y="-14" width="16" height="22" rx="3" fill="#fdf6e3"/><rect x="-6" y="8" width="12" height="5" rx="1" fill="#c8a882"/><rect x="-4" y="-16" width="8" height="4" rx="1" fill="#fdf6e3"/><path d="M-5,-18 Q-3,-22 -5,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/><path d="M0,-18 Q2,-22 0,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/><path d="M5,-18 Q3,-22 5,-26" stroke="#c8a882" stroke-width="1.5" fill="none"/></g>
+      <g transform="translate(346, 200)"><circle r="28" fill="#FF6B00"/><path d="M-10,-10 Q0,-20 10,-10" stroke="#fdf6e3" stroke-width="2.5" fill="none"/><rect x="-13" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/><rect x="6" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/></g>
+      <g transform="translate(308, 308)"><circle r="28" fill="#006AA7"/><path d="M-10,-2 Q-10,12 0,14 Q10,12 10,-2 Z" fill="#fdf6e3"/><ellipse cx="0" cy="14" rx="13" ry="4" fill="#fdf6e3"/><path d="M10,2 Q18,2 18,8 Q18,14 10,12" stroke="#fdf6e3" stroke-width="2" fill="none"/></g>
+      <g transform="translate(92, 308)"><circle r="28" fill="#DC143C"/><path d="M-12,-10 L-6,-4 L0,-8 L6,-4 L12,-10 L14,14 L-14,14 Z" fill="#fdf6e3"/></g>
+      <g transform="translate(54, 200)"><circle r="28" fill="#555"/><rect x="-9" y="-13" width="18" height="20" rx="3" fill="#ddd"/><rect x="-6" y="-10" width="12" height="8" rx="1" fill="#00ff88" opacity="0.9"/></g>
+      <rect x="30" y="332" width="340" height="40" rx="4" fill="#2A1812"/>
+      <text x="200" y="350" text-anchor="middle" fill="#fdf6e3" font-family="Georgia, serif" font-size="13" font-weight="bold">CAFEZINHO &amp; PLANETA,</text>
+      <text x="200" y="364" text-anchor="middle" fill="#c8a882" font-family="Georgia, serif" font-size="11" letter-spacing="3">URGENTE!</text>
+      <line x1="50" y1="330" x2="350" y2="330" stroke="#2A1812" stroke-width="2"/>
+    </svg>
+    <span class="label">Thumbnail (200px)</span>
+  </div>
+
+  <!-- VERSÃO QUADRADA PARA INSTAGRAM 80px -->
+  <div class="variante">
+    <svg width="80" height="80" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <defs><clipPath id="gc3"><circle cx="200" cy="200" r="118"/></clipPath></defs>
+      <rect width="400" height="400" fill="#2A1812"/>
+      <circle cx="200" cy="200" r="118" fill="#fff8f0"/>
+      <g clip-path="url(#gc3)" stroke="#c8a882" stroke-width="1.5" fill="none" opacity="0.5">
+        <ellipse cx="200" cy="200" rx="118" ry="28"/>
+        <ellipse cx="200" cy="200" rx="118" ry="62"/>
+        <ellipse cx="200" cy="200" rx="118" ry="98"/>
+        <line x1="82" y1="200" x2="318" y2="200"/>
+        <line x1="200" y1="82" x2="200" y2="318"/>
+        <path d="M200,82 Q250,200 200,318"/><path d="M200,82 Q150,200 200,318"/>
+      </g>
+      <circle cx="200" cy="200" r="118" fill="none" stroke="#fdf6e3" stroke-width="4"/>
+      <g transform="translate(200, 54)"><circle r="28" fill="#fdf6e3"/><rect x="-8" y="-14" width="16" height="22" rx="3" fill="#2A1812"/></g>
+      <g transform="translate(346, 200)"><circle r="28" fill="#FF6B00"/><rect x="-13" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/><rect x="6" y="-12" width="7" height="11" rx="3" fill="#fdf6e3"/></g>
+      <g transform="translate(308, 308)"><circle r="28" fill="#006AA7"/><path d="M-10,-2 Q-10,12 0,14 Q10,12 10,-2 Z" fill="#fdf6e3"/></g>
+      <g transform="translate(92, 308)"><circle r="28" fill="#DC143C"/><path d="M-12,-10 L-6,-4 L0,-8 L6,-4 L12,-10 L14,14 L-14,14 Z" fill="#fdf6e3"/></g>
+      <g transform="translate(54, 200)"><circle r="28" fill="#444"/><rect x="-9" y="-13" width="18" height="20" rx="3" fill="#00ff88" opacity="0.8"/></g>
+    </svg>
+    <span class="label">Favicon / ícone (80px)</span>
+  </div>
+
+</div>
+
+<!-- Legenda dos símbolos -->
+<div style="background:#fff8f0; border: 1px solid #c8a882; border-radius:8px; padding:20px; max-width:520px; font-size:13px; color:#2A1812; line-height:2">
+  <strong style="display:block; margin-bottom:8px; letter-spacing:1px; text-transform:uppercase; font-size:11px;">Legenda dos símbolos</strong>
+  <span style="margin-right:16px">⬆️ <strong>Garrafa térmica</strong> — Pedrinho do Mundo 🇧🇷</span><br>
+  <span style="margin-right:16px">➡️ <strong>Fone de ouvido</strong> — Raj das Planilhas 🇮🇳</span><br>
+  <span style="margin-right:16px">↘️ <strong>Xícara de fika</strong> — Lars Lagom 🇸🇪</span><br>
+  <span style="margin-right:16px">↙️ <strong>Camisa usada</strong> — Zbig 🇵🇱</span><br>
+  <span>⬅️ <strong>Cafeteira com tela</strong> — Cafeteira 3000 🤖</span>
+</div>
+
+</body>
+</html>

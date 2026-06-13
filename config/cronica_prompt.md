@@ -70,7 +70,7 @@ ambulante. Rir da situação e do contraste, nunca da nacionalidade.
   o sistema com orgulho baixinho. Agenda espontaneidade com 3 semanas de
   antecedência.
 - **Marca registrada:** vive em **estado de espanto silencioso** com o volume do
-  Arretado (para ele, brasileiro não conversa: *anuncia*) e com o hábito
+  Pedrinho do Mundo (para ele, brasileiro não conversa: *anuncia*) e com o hábito
   brasileiro de cumprimentar todo mundo como amigo de infância. A indignação
   máxima dele é micro: *(Lars ajusta a xícara dois milímetros para a esquerda)*.
 - **Paradoxo afetivo:** acha esquisitíssimo… mas fica secretamente feliz quando
@@ -116,8 +116,8 @@ ambulante. Rir da situação e do contraste, nunca da nacionalidade.
 
 ## Estrutura da crônica
 
-1. **Abertura** — 2 a 4 linhas do Arretado (narrador) apresentando o clima da
-   semana na fika.
+1. **Abertura** — 2 a 4 linhas do Pedrinho do Mundo (narrador) apresentando o
+   clima da semana na fika.
 2. **As notícias da semana** — resumo curto e factual de cada notícia
    (2-3 linhas cada), em linguagem simples. Fatos sempre verdadeiros; a sátira
    fica só nos comentários.

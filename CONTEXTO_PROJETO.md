@@ -3,7 +3,7 @@
 > Arquivo de memória do projeto. Registra o que foi construído, decisões tomadas,
 > incidentes resolvidos e próximos passos. Atualizar a cada sessão de trabalho.
 >
-> **Última atualização:** 2026-06-10
+> **Última atualização:** 2026-06-13
 
 ---
 
@@ -195,9 +195,58 @@ Tentativas de adicionar elemento gráfico ao wordmark, todas revertidas ao origi
 
 ---
 
+---
+
+## Sessão 6 — Coluna "Cafezinho & Planeta, Urgente!"
+
+### O que foi construído
+
+**Nova coluna semanal satírica** inspirada no formato "Casseta & Planeta". Nome final: "Cafezinho & Planeta, Urgente!" (sem risco de marca registrada).
+
+**Elenco fixo (5 personagens):**
+| Personagem | Nacionalidade | Marca registrada |
+|---|---|---|
+| 🌶️ Pedrinho do Mundo | Brasil (paulista que viveu na Bahia) | Fala alto, tapinha nas costas, piada em inglês que só ele entende |
+| 🇮🇳 Raj das Planilhas | Índia | Nunca tira o fone — ninguém sabe com quem fala |
+| 🇸🇪 Lars Lagom | Suécia | Nunca levanta a voz, espanto silencioso com os brasileiros |
+| 🇵🇱 Zbig | Polônia | Nunca saiu da guerra, usa a mesma camisa o verão inteiro |
+| 🤖 Cafeteira 3000 | — | Reinicia no meio da melhor piada, estatísticas sem noção de contexto |
+
+**Componentes entregues:**
+- `config/cronica_prompt.md` — prompt mestre versionado com 5 fichas completas
+- `config/cronica.yaml` — configuração da coluna (categoria WP, featured_media_id)
+- `pipeline/cronica.py` — CLI: `--listar [--dias N]` e `--agendar arquivo.md --titulo "..."`
+- `tests/test_cronica.py` — 11 testes unitários, todos passando (55 total no suite)
+- `.claude/skills/cronica-da-semana/SKILL.md` — ritual semanal de 10 passos
+- `cronicas/` — pasta para histórico de edições (formato `AAAA-MM-DD-slug.md`)
+- `design/cafezinho-e-planeta-icone.html` — ícone SVG vetorial (3 variantes: 400px, 200px, 80px)
+
+**Primeira edição escrita:**
+- Arquivo: `cronicas/2026-06-15-fique-no-seu-lugar.md`
+- Tema unificador: "Europe building fences for people"
+- Notícias: Suíça limita imigração, Suécia reduz idade penal, Ryanair separa famílias
+
+### Pré-requisitos antes de agendar a primeira edição
+
+1. **Renovar `WP_APP_PASSWORD`** para o usuário da pipeline no painel WordPress
+2. **Criar categoria "Cafezinho & Planeta, Urgente!"** no WP e adicionar ID ao `config/wp_categories.yaml`
+3. *(Opcional)* Upload da capa da coluna ao WP Media e configurar `featured_media_id` em `config/cronica.yaml`
+4. Rodar: `python -m pipeline.cronica --agendar cronicas/2026-06-15-fique-no-seu-lugar.md --titulo "Fique no Seu Lugar! — A Europa Decide Onde Você Pertence"`
+
+### Decisões
+
+- Cenário: **fika sueca** (pausa de café) em sala multicultural — não boteco
+- Narrador: **Pedrinho do Mundo** (não "O Arretado" — evitar estereótipo baiano)
+- Agendamento: `status=future` no WP REST API, domingo 08:00 UTC — sem cron novo
+- Ícone: SVG gerado em código (Adobe generative AI indisponível no MCP atual)
+
+---
+
 ## Próximos passos
 
-- [ ] Ideia de logo: criar `design/logo-watermark.html` para iterar localmente (xícara marca d'água)
+- [ ] Completar pré-requisitos do WordPress (App Password + categoria) para agendar a 1ª edição
+- [ ] Fazer push para o servidor: `git push origin master:main` + `git pull` no servidor
+- [ ] Widget lateral na home: exibir último post de "Cafezinho & Planeta, Urgente!" como coluna fixa
 - [ ] Renovar `WP_APP_PASSWORD` para o usuário `cafezinho-bot` no painel WordPress
 - [ ] Guardar senhas do servidor em password manager
 - [ ] Phase B do widget de tempo — afinar visual e responsividade
