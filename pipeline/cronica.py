@@ -65,3 +65,36 @@ def listar_posts(client: httpx.Client, base_url: str, *, dias: int = 7) -> list[
         }
         for p in resp.json()
     ]
+
+
+def agendar_cronica(
+    client: httpx.Client,
+    *,
+    base_url: str,
+    auth_header: str,
+    titulo: str,
+    html: str,
+    categoria_id: int,
+    quando: datetime,
+    featured_media_id: int | None = None,
+) -> dict:
+    """Cria o post da crônica com status `future` (o WordPress publica sozinho)."""
+    payload: dict = {
+        "title": titulo,
+        "content": html,
+        "status": "future",
+        "date_gmt": quando.strftime("%Y-%m-%dT%H:%M:%S"),
+        "categories": [categoria_id],
+    }
+    if featured_media_id is not None:
+        payload["featured_media"] = featured_media_id
+
+    resp = client.post(
+        f"{base_url.rstrip('/')}/wp-json/wp/v2/posts",
+        headers={"Authorization": auth_header, "Content-Type": "application/json"},
+        json=payload,
+        timeout=30.0,
+    )
+    if resp.status_code not in (200, 201):
+        raise CronicaError(f"WordPress retornou {resp.status_code}: {resp.text[:200]}")
+    return resp.json()
