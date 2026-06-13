@@ -193,7 +193,11 @@ main.site-main {
   vertical-align: middle;
 }
 .flag.fr { background: linear-gradient(to right, #002395 33%, #fff 33% 66%, #ED2939 66%); }
-.flag.se { background: linear-gradient(to bottom, #006AA7 40%, #FECC00 40% 60%, #006AA7 60%); }
+.flag.se {
+  background:
+    linear-gradient(to right, transparent 25%, #FECC00 25% 42%, transparent 42%),
+    linear-gradient(to bottom, #006AA7 40%, #FECC00 40% 60%, #006AA7 60%);
+}
 .flag.de { background: linear-gradient(to bottom, #000 33%, #DD0000 33% 66%, #FFCE00 66%); }
 .flag.es { background: linear-gradient(to bottom, #C60B1E 25%, #FFC400 25% 75%, #C60B1E 75%); }
 .flag.it { background: linear-gradient(to right, #008C45 33%, #fff 33% 66%, #CD212A 66%); }
