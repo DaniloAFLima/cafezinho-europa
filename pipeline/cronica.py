@@ -3,9 +3,17 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 
+import argparse
+import base64
+import os
+import sys
+from pathlib import Path
+
 import httpx
 import markdown as _markdown
+import yaml
 from bs4 import BeautifulSoup
+from dotenv import load_dotenv
 
 HORA_PUBLICACAO_UTC = 8  # domingo, 08:00 UTC
 
@@ -98,3 +106,94 @@ def agendar_cronica(
     if resp.status_code not in (200, 201):
         raise CronicaError(f"WordPress retornou {resp.status_code}: {resp.text[:200]}")
     return resp.json()
+
+
+def carregar_config(
+    cronica_yaml: str | Path = "config/cronica.yaml",
+    categorias_yaml: str | Path = "config/wp_categories.yaml",
+) -> dict:
+    """Resolve a categoria da coluna para o ID do WP. Erro claro se não mapeada."""
+    with open(cronica_yaml, encoding="utf-8") as f:
+        cfg = yaml.safe_load(f)
+    with open(categorias_yaml, encoding="utf-8") as f:
+        categorias = yaml.safe_load(f)["categories"]
+
+    categoria_id = categorias.get(cfg["categoria"])
+    if categoria_id is None:
+        raise CronicaError(
+            f"Categoria '{cfg['categoria']}' não está em {categorias_yaml}. "
+            "Crie a categoria no WordPress e adicione o ID lá (ver README)."
+        )
+    return {"categoria_id": categoria_id, "featured_media_id": cfg.get("featured_media_id")}
+
+
+def _auth_header(username: str, app_password: str) -> str:
+    token = base64.b64encode(f"{username}:{app_password}".encode()).decode()
+    return f"Basic {token}"
+
+
+def _cmd_listar(base_url: str, dias: int) -> int:
+    with httpx.Client() as client:
+        posts = listar_posts(client, base_url, dias=dias)
+    if not posts:
+        print(f"Nenhum post publicado nos últimos {dias} dias.")
+        return 0
+    for i, p in enumerate(posts, 1):
+        print(f"{i}. {p['titulo']}  ({p['date'][:10]})")
+        print(f"   {p['resumo']}")
+        print(f"   {p['link']}\n")
+    return 0
+
+
+def _cmd_agendar(base_url: str, arquivo_md: str, titulo: str | None) -> int:
+    if not titulo:
+        print("--agendar exige --titulo", file=sys.stderr)
+        return 1
+    arquivo = Path(arquivo_md)
+    if not arquivo.exists():
+        print(f"Arquivo não encontrado: {arquivo}", file=sys.stderr)
+        return 1
+
+    cfg = carregar_config()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_APP_PASSWORD")
+    if not username or not app_password:
+        print("WP_USERNAME/WP_APP_PASSWORD não definidos no .env", file=sys.stderr)
+        return 1
+
+    html = md_para_html(arquivo.read_text(encoding="utf-8"))
+    quando = proximo_domingo(datetime.now(timezone.utc))
+    with httpx.Client() as client:
+        data = agendar_cronica(
+            client,
+            base_url=base_url,
+            auth_header=_auth_header(username, app_password),
+            titulo=titulo,
+            html=html,
+            categoria_id=cfg["categoria_id"],
+            quando=quando,
+            featured_media_id=cfg["featured_media_id"],
+        )
+    print(f"Agendado para {quando:%Y-%m-%d %H:%M} UTC — post {data['id']}: {data.get('link')}")
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description="Coluna 'Cafezinho & Planeta, Urgente!'")
+    grupo = parser.add_mutually_exclusive_group(required=True)
+    grupo.add_argument("--listar", action="store_true", help="Lista os posts da semana")
+    grupo.add_argument("--agendar", metavar="ARQUIVO_MD", help="Agenda a crônica para domingo")
+    parser.add_argument("--dias", type=int, default=7, help="Janela de busca (--listar)")
+    parser.add_argument("--titulo", help="Título do post (obrigatório com --agendar)")
+    args = parser.parse_args()
+
+    load_dotenv()
+    base_url = os.getenv("WP_URL", "https://cafezinhoeuropa.com")
+
+    if args.listar:
+        return _cmd_listar(base_url, args.dias)
+    return _cmd_agendar(base_url, args.agendar, args.titulo)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

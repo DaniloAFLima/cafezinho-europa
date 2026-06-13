@@ -1,0 +1,7 @@
+# Config da coluna "Cafezinho & Planeta, Urgente!"
+# O nome da categoria deve existir em config/wp_categories.yaml (ver README).
+categoria: "Cafezinho & Planeta, Urgente!"
+
+# media_id da capa fixa da coluna no WP Media Library.
+# null = post criado sem imagem destacada (não é erro).
+featured_media_id: null

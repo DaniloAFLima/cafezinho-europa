@@ -8,6 +8,7 @@ import httpx
 import pytest
 
 from pipeline.cronica import CronicaError, _strip_html, md_para_html, proximo_domingo, listar_posts, agendar_cronica
+from pipeline.cronica import carregar_config
 
 
 def test_proximo_domingo_de_uma_quinta():
@@ -132,3 +133,27 @@ def test_agendar_cronica_erro_http_vira_cronica_error():
             categoria_id=12,
             quando=datetime(2026, 6, 14, 8, 0, tzinfo=timezone.utc),
         )
+
+
+def test_carregar_config_resolve_categoria_id(tmp_path):
+    cronica_yaml = tmp_path / "cronica.yaml"
+    cronica_yaml.write_text(
+        'categoria: "Cafezinho & Planeta, Urgente!"\nfeatured_media_id: 77\n',
+        encoding="utf-8",
+    )
+    categorias_yaml = tmp_path / "wp_categories.yaml"
+    categorias_yaml.write_text(
+        'categories:\n  "Cafezinho & Planeta, Urgente!": 12\n',
+        encoding="utf-8",
+    )
+    cfg = carregar_config(cronica_yaml, categorias_yaml)
+    assert cfg == {"categoria_id": 12, "featured_media_id": 77}
+
+
+def test_carregar_config_categoria_ausente_e_erro(tmp_path):
+    cronica_yaml = tmp_path / "cronica.yaml"
+    cronica_yaml.write_text('categoria: "Inexistente"\nfeatured_media_id: null\n', encoding="utf-8")
+    categorias_yaml = tmp_path / "wp_categories.yaml"
+    categorias_yaml.write_text('categories:\n  "Europa": 2\n', encoding="utf-8")
+    with pytest.raises(CronicaError, match="Inexistente"):
+        carregar_config(cronica_yaml, categorias_yaml)
