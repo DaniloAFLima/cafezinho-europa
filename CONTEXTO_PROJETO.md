@@ -71,6 +71,7 @@ traduz e resume com Claude (Anthropic), e publica no WordPress automaticamente.
 
 - **IP:** `167.233.58.224`
 - **Usuário SSH:** `cafezinho`
+- **Diretório do projeto:** `/home/cafezinho/cafezinho-europa`
 - **OS:** Ubuntu 26.04 LTS
 - **Domínio:** `cafezinhoeuropa.com` (DNS apontando para o IP acima)
 
@@ -129,43 +130,10 @@ Todo o pipeline, publisher, og_image e weather plugin nunca tinham chegado ao se
 5. **Ativação do tema e plugin** via atualização direta no banco WordPress
 6. **Cache do tempo populado** via `wp-cron.php`
 
-### Estado final após esta sessão
-
-- `https://cafezinhoeuropa.com` funcionando ✅
-- Tema `cafezinho` ativo ✅
-- Plugin `cafezinho-weather` ativo, widget ao vivo (Londres 17°, Paris 23°...) ✅
-- Pipeline cron 07:00 UTC ativo ✅
-- README.md atualizado com guia completo de recovery ✅
-
 ### Lição aprendida
 
 O `infra/.env` **não é commitado** (correto, por segurança) mas precisa ser recriado
 manualmente no servidor após qualquer rebuild. Guardar as senhas em um password manager.
-
----
-
-## Arquitetura atual
-
-```
-GitHub (85rqmryjgx-create/cafezinho-europa)
-    ↓ git push origin master:main  (do Windows local)
-    ↓ git pull  (no servidor)
-
-Servidor 167.233.58.224
-├── cron 07:00 UTC
-│   └── run_daily.sh
-│       └── python -m pipeline.main
-│           ├── fetcher.py    → RSS europeus
-│           ├── dedupe.py     → SQLite
-│           ├── relevance.py  → top-N
-│           ├── processor.py  → Claude API
-│           └── publisher.py  → WordPress REST API
-│
-└── Docker
-    ├── caddy      → cafezinhoeuropa.com (SSL automático)
-    ├── wordpress  → tema cafezinho + plugin cafezinho-weather
-    └── mariadb    → banco WordPress
-```
 
 ---
 
@@ -186,68 +154,148 @@ Tentativas de adicionar elemento gráfico ao wordmark, todas revertidas ao origi
 1. Fumaça substituindo ponto do "i" — difícil de posicionar sem ver ao vivo
 2. Xícara como marca d'água atrás do wordmark — problema de z-index/posicionamento
 
-**Lição:** Para iterações visuais no logo, criar `design/logo-watermark.html` local primeiro e validar no browser antes de deployar.
-
-### Estado final
-
-- Site original restaurado — wordmark "Cafezinho Europa" limpo
-- Página `/contato` funcionando com template dedicado
-
----
+**Lição:** Para iterações visuais, criar arquivo em `design/` e validar no browser antes de deployar.
 
 ---
 
 ## Sessão 6 — Coluna "Cafezinho & Planeta, Urgente!"
 
-### O que foi construído
+### Conceito
 
-**Nova coluna semanal satírica** inspirada no formato "Casseta & Planeta". Nome final: "Cafezinho & Planeta, Urgente!" (sem risco de marca registrada).
+Coluna satírica semanal inspirada no "Casseta & Planeta". Nome final evita marca registrada.
+Uma **fika da tarde multicultural** — os personagens fixos comentam 2-3 notícias reais
+através das lentes das suas culturas. As falas dramatizam as **opiniões do editor** (Danilo).
 
-**Elenco fixo (5 personagens):**
-| Personagem | Nacionalidade | Marca registrada |
+### Elenco fixo (5 personagens)
+
+| Personagem | Origem | Marca registrada |
 |---|---|---|
-| 🌶️ Pedrinho do Mundo | Brasil (paulista que viveu na Bahia) | Fala alto, tapinha nas costas, piada em inglês que só ele entende |
-| 🇮🇳 Raj das Planilhas | Índia | Nunca tira o fone — ninguém sabe com quem fala |
-| 🇸🇪 Lars Lagom | Suécia | Nunca levanta a voz, espanto silencioso com os brasileiros |
-| 🇵🇱 Zbig | Polônia | Nunca saiu da guerra, usa a mesma camisa o verão inteiro |
-| 🤖 Cafeteira 3000 | — | Reinicia no meio da melhor piada, estatísticas sem noção de contexto |
+| 🌶️ **Pedrinho do Mundo** | Brasil — paulista que viveu na Bahia | Fala alto, tapinha nas costas, piada em inglês que só ele entende, home office tático |
+| 🇮🇳 **Raj das Planilhas** | Índia (Bangalore) | Nunca tira o fone — ninguém sabe com quem fala (trabalho? mãe? vozes do além?) |
+| 🇸🇪 **Lars Lagom** | Suécia | Nunca levanta a voz, espanto silencioso com o volume dos brasileiros |
+| 🇵🇱 **Zbig** | Polônia (Cracóvia) | Nunca saiu da guerra, usa a mesma camisa o verão inteiro |
+| 🤖 **Cafeteira 3000** | — | Reinicia no meio da melhor piada, 12 estatísticas sem noção de contexto |
 
-**Componentes entregues:**
-- `config/cronica_prompt.md` — prompt mestre versionado com 5 fichas completas
-- `config/cronica.yaml` — configuração da coluna (categoria WP, featured_media_id)
-- `pipeline/cronica.py` — CLI: `--listar [--dias N]` e `--agendar arquivo.md --titulo "..."`
-- `tests/test_cronica.py` — 11 testes unitários, todos passando (55 total no suite)
-- `.claude/skills/cronica-da-semana/SKILL.md` — ritual semanal de 10 passos
-- `cronicas/` — pasta para histórico de edições (formato `AAAA-MM-DD-slug.md`)
-- `design/cafezinho-e-planeta-icone.html` — ícone SVG vetorial (3 variantes: 400px, 200px, 80px)
+### Componentes entregues
 
-**Primeira edição escrita:**
-- Arquivo: `cronicas/2026-06-15-fique-no-seu-lugar.md`
-- Tema unificador: "Europe building fences for people"
-- Notícias: Suíça limita imigração, Suécia reduz idade penal, Ryanair separa famílias
+| Arquivo | Função |
+|---------|--------|
+| `config/cronica_prompt.md` | Prompt mestre com 5 fichas completas, estrutura, regras editoriais |
+| `config/cronica.yaml` | Categoria WP + featured_media_id da coluna |
+| `pipeline/cronica.py` | CLI: `--listar [--dias N]` e `--agendar arquivo.md --titulo "..."` |
+| `tests/test_cronica.py` | 11 testes unitários (55 total no suite), todos passando |
+| `.claude/skills/cronica-da-semana/SKILL.md` | Ritual semanal de 10 passos para sessão Claude Code |
+| `cronicas/` | Histórico de edições (`AAAA-MM-DD-slug.md`) |
+| `design/cafezinho-e-planeta-icone.html` | Ícone SVG vetorial (3 variantes: 400px, 200px, 80px) |
+| `cronicas/2026-06-15-fique-no-seu-lugar.md` | 1ª edição — tema: Europa e suas cercas (Suíça, Suécia, Ryanair) |
 
-### Pré-requisitos antes de agendar a primeira edição
+### Decisões técnicas
 
-1. **Renovar `WP_APP_PASSWORD`** para o usuário da pipeline no painel WordPress
-2. **Criar categoria "Cafezinho & Planeta, Urgente!"** no WP e adicionar ID ao `config/wp_categories.yaml`
-3. *(Opcional)* Upload da capa da coluna ao WP Media e configurar `featured_media_id` em `config/cronica.yaml`
-4. Rodar: `python -m pipeline.cronica --agendar cronicas/2026-06-15-fique-no-seu-lugar.md --titulo "Fique no Seu Lugar! — A Europa Decide Onde Você Pertence"`
+- Agendamento nativo do WP: `status=future` + `date_gmt` → sem cron novo
+- `--listar` usa endpoint público (`GET /wp-json/wp/v2/posts`) — sem credenciais
+- `--agendar` exige `WP_USERNAME` + `WP_APP_PASSWORD` no `.env`
+- `proximo_domingo`: se rodar num domingo, agenda para o seguinte (edição atual já está no ar)
+- Markdown→HTML: biblioteca `markdown==3.7` (instalada no servidor)
 
-### Decisões
+### Pré-requisitos pendentes para agendar a 1ª edição
 
-- Cenário: **fika sueca** (pausa de café) em sala multicultural — não boteco
-- Narrador: **Pedrinho do Mundo** (não "O Arretado" — evitar estereótipo baiano)
-- Agendamento: `status=future` no WP REST API, domingo 08:00 UTC — sem cron novo
-- Ícone: SVG gerado em código (Adobe generative AI indisponível no MCP atual)
+1. **Renovar `WP_APP_PASSWORD`** no painel WordPress (usuário pipeline)
+2. **Criar categoria** "Cafezinho & Planeta, Urgente!" no WP
+3. **Adicionar ID** da nova categoria em `config/wp_categories.yaml`
+4. *(Opcional)* Upload da capa ao WP Media e configurar `featured_media_id` em `config/cronica.yaml`
+5. Rodar:
+   ```
+   python -m pipeline.cronica --agendar cronicas/2026-06-15-fique-no-seu-lugar.md \
+     --titulo "Fique no Seu Lugar! — A Europa Decide Onde Você Pertence"
+   ```
+
+---
+
+## Sessão 7 — Home sidebar + correção de bandeiras
+
+### Widget lateral na home
+
+Adicionado em `index.php` + `main.css`:
+
+- Layout dois colunas na home: `.main-feed` (flex: 1) + `.home-sidebar` (280px fixo)
+- Sidebar com `position: sticky; top: 20px` — acompanha scroll em desktop
+- Em mobile (< 900px) empilha abaixo do feed, centralizado
+- Widget `.sidebar-cronica` busca o último post publicado da categoria "Cafezinho & Planeta, Urgente!"
+- Enquanto a categoria não existir no WP, exibe placeholder: *"A fika ainda não começou…"*
+- Elenco de emojis dos personagens no rodapé do widget
+
+### Correção de bandeiras CSS
+
+As bandeiras são elementos `18×12px` gerados via CSS em `assets/main.css`.
+Função PHP `cafezinho_country_flag_class()` em `functions.php` mapeia categoria → classe CSS.
+
+| Bandeira | Problema | Correção |
+|----------|----------|----------|
+| 🇸🇪 Suécia (`.flag.se`) | Só listras horizontais — faltava barra vertical | Cruz nórdica: 2 gradientes empilhados (horizontal + vertical amarelos) |
+| 🇬🇧 Reino Unido (`.flag.uk`) | Azul sólido `#012169` | Union Jack: 6 gradientes (fundo azul + X branco diagonal + cruz branca + cruz vermelha) |
+| 🇪🇺 EU (`.flag.eu`) | 1 estrela centralizada | 12 pontos amarelos em círculo via `box-shadow` no `::after` |
+| 🇫🇷 🇩🇪 🇪🇸 🇮🇹 | Corretas | Sem alteração |
+
+### Cache bust
+
+Bumped `style.css`: `Version: 1.0.0` → `1.1.0`
+WordPress usa a versão como querystring (`main.css?ver=1.1.0`), invalidando o cache do browser.
+
+### Deploy desta sessão
+
+Para mudanças de PHP/CSS/config, **não é necessário reiniciar Docker** — basta `git pull`.
+O WordPress serve os arquivos montados em volume diretamente.
+
+```bash
+# Do Windows:
+git push origin master:main
+
+# No servidor (SSH cafezinho@167.233.58.224):
+cd /home/cafezinho/cafezinho-europa && git pull
+```
+
+---
+
+## Arquitetura atual (v1.1.0)
+
+```
+GitHub (85rqmryjgx-create/cafezinho-europa)
+    ↓ git push origin master:main  (do Windows local)
+    ↓ git pull  (no servidor — /home/cafezinho/cafezinho-europa)
+
+Servidor 167.233.58.224
+├── cron 07:00 UTC
+│   └── run_daily.sh → .venv/bin/activate → python -m pipeline.main
+│       ├── fetcher.py    → RSS europeus
+│       ├── dedupe.py     → SQLite
+│       ├── relevance.py  → top-N
+│       ├── processor.py  → Claude API
+│       └── publisher.py  → WordPress REST API
+│
+├── pipeline/cronica.py (manual, via sessão Claude Code)
+│   ├── --listar   → GET /wp-json/wp/v2/posts (público)
+│   └── --agendar  → POST /wp-json/wp/v2/posts (status=future, domingo 08:00 UTC)
+│
+└── Docker
+    ├── caddy      → cafezinhoeuropa.com (SSL automático)
+    ├── wordpress  → tema cafezinho v1.1.0 + plugin cafezinho-weather
+    │   ├── home: hero + grid + sidebar (última crônica)
+    │   └── bandeiras: FR ✅ SE ✅ DE ✅ ES ✅ IT ✅ UK ✅ EU ✅
+    └── mariadb    → banco WordPress
+```
 
 ---
 
 ## Próximos passos
 
-- [ ] Completar pré-requisitos do WordPress (App Password + categoria) para agendar a 1ª edição
-- [ ] Fazer push para o servidor: `git push origin master:main` + `git pull` no servidor
-- [ ] Widget lateral na home: exibir último post de "Cafezinho & Planeta, Urgente!" como coluna fixa
-- [ ] Renovar `WP_APP_PASSWORD` para o usuário `cafezinho-bot` no painel WordPress
-- [ ] Guardar senhas do servidor em password manager
+### Bloqueadores (dependem de ação manual no WP)
+- [ ] Renovar `WP_APP_PASSWORD` para o usuário pipeline no painel WordPress
+- [ ] Criar categoria "Cafezinho & Planeta, Urgente!" no WP admin
+- [ ] Adicionar ID da categoria em `config/wp_categories.yaml` + push + pull
+- [ ] Agendar 1ª edição da crônica (rodar `pipeline/cronica.py --agendar`)
+
+### Backlog técnico
 - [ ] Phase B do widget de tempo — afinar visual e responsividade
 - [ ] Monitorar runs do pipeline no servidor (`logs/pipeline-*.log`)
+- [ ] Guardar senhas do servidor em password manager
+- [ ] Ideia de logo: iterar em `design/logo-watermark.html` localmente antes de deployar
