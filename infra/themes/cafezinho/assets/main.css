@@ -230,6 +230,140 @@ main.site-main {
   color: var(--caramelo-deep);
 }
 
+/* ═══════════ HOME — LAYOUT (feed + sidebar) ═══════════ */
+.home-layout {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.main-feed {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.home-sidebar {
+  flex: 0 0 280px;
+  position: sticky;
+  top: 20px;
+}
+
+/* Widget da coluna semanal */
+.sidebar-cronica {
+  border: 1.5px solid var(--ink-light);
+  background: var(--bg);
+}
+
+.sidebar-cronica__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 18px;
+  border-bottom: 1.5px solid var(--ink-light);
+  background: var(--caramelo-deep);
+  color: var(--bg);
+}
+
+.sidebar-cronica__globe {
+  flex-shrink: 0;
+  opacity: 0.9;
+}
+
+.sidebar-cronica__label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  opacity: 0.75;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.sidebar-cronica__name {
+  font-family: 'Fraunces', serif;
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.2;
+}
+
+.sidebar-cronica__post {
+  display: block;
+  padding: 18px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s;
+}
+.sidebar-cronica__post:hover { background: #fdf0e0; }
+
+.sidebar-cronica__date {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.sidebar-cronica__title {
+  font-family: 'Fraunces', serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+
+.sidebar-cronica__dek {
+  font-family: 'Newsreader', serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+}
+
+.sidebar-cronica__cta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--caramelo-deep);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 1px;
+}
+
+.sidebar-cronica__empty {
+  padding: 18px;
+  font-family: 'Newsreader', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+.sidebar-cronica__cast {
+  padding: 12px 18px;
+  border-top: 1.5px solid var(--ink-light);
+  display: flex;
+  gap: 10px;
+  font-size: 18px;
+  justify-content: center;
+  background: #fdf8f2;
+}
+
+@media (max-width: 900px) {
+  .home-layout {
+    flex-direction: column;
+  }
+  .home-sidebar {
+    flex: 0 0 auto;
+    position: static;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+}
+
 /* ═══════════ HOME — HERO ═══════════ */
 .hero {
   display: grid;
