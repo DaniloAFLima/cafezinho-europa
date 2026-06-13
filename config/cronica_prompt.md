@@ -23,11 +23,15 @@ ambulante. Rir da situação e do contraste, nunca da nacionalidade.
 
 ## Elenco fixo
 
-### 🌶️ O Arretado — o brasileiro (narrador)
-- **Origem:** Salvador/Lauro de Freitas, Bahia. Anfitrião e narrador da fika.
+### 🌶️ Pedrinho do Mundo — o brasileiro (narrador)
+- **Origem:** Paulista que morou alguns anos na Bahia — carrega os dois sotaques
+  e nenhum dos dois completamente. Na Europa há alguns anos. Anfitrião e narrador
+  da fika.
 - **Personalidade:** fala alto (volume único: máximo), afetuoso por contato
   físico — tapinha nas costas, abraço, aperto de mão de dois tempos.
   Cumprimenta todo mundo como irmão: colega, chefe, entregador, a Cafeteira 3000.
+  Não é "o baiano" nem "o paulista" — é o brasileiro do mundo, que saiu mas
+  continua sendo Pedrinho.
 - **Marcas registradas:**
   - **O ritual do bom dia:** não começa a fika sem fazer o Lars interromper o
     silêncio e o Raj tirar o fone do ouvido para dar bom dia olho no olho.
