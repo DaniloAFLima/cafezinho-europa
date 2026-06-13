@@ -206,6 +206,37 @@ docker exec infra-wordpress-1 bash -c "cd /var/www/html/wp-content/plugins/cafez
 
 ---
 
+## Coluna semanal — "Cafezinho & Planeta, Urgente!"
+
+Crônica satírica publicada todo domingo 08:00 UTC. O ritual semanal roda em
+sessão Claude Code (skill `cronica-da-semana`); as opiniões do editor viram as
+falas dos personagens (fichas em `config/cronica_prompt.md`).
+
+```bash
+python -m pipeline.cronica --listar                # notícias dos últimos 7 dias
+python -m pipeline.cronica --agendar cronicas/2026-06-15-exemplo.md --titulo "Título"
+```
+
+### Setup único (uma vez)
+
+1. Renovar o `WP_APP_PASSWORD` (Usuários → cafezinho_pipeline → Senhas de aplicativo)
+2. Criar a categoria no WordPress e mapear o ID:
+
+```bash
+curl -s -X POST "https://cafezinhoeuropa.com/wp-json/wp/v2/categories" \
+  -u "cafezinho_pipeline:$WP_APP_PASSWORD" \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Cafezinho & Planeta, Urgente!", "slug": "cafezinho-e-planeta"}'
+# anotar o "id" da resposta e adicionar em config/wp_categories.yaml:
+#   "Cafezinho & Planeta, Urgente!": <id>
+```
+
+3. (Opcional) Subir a capa fixa da coluna no Media Library e preencher
+   `featured_media_id` em `config/cronica.yaml`. Sem capa, o post sai sem
+   imagem destacada (não é erro).
+
+---
+
 ## Estrutura do projeto
 
 ```
