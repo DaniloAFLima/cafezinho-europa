@@ -3,7 +3,9 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from pipeline.cronica import _strip_html, md_para_html, proximo_domingo
+import httpx
+
+from pipeline.cronica import _strip_html, md_para_html, proximo_domingo, listar_posts
 
 
 def test_proximo_domingo_de_uma_quinta():
@@ -32,3 +34,35 @@ def test_md_para_html_converte_estrutura_da_cronica():
 
 def test_strip_html_remove_tags_e_decodifica_entidades():
     assert _strip_html("<p>T&iacute;tulo <b>teste</b></p>\n") == "Título teste\n"
+
+
+def test_listar_posts_parseia_resposta_do_wp():
+    def handler(request: httpx.Request) -> httpx.Response:
+        assert request.url.path == "/wp-json/wp/v2/posts"
+        assert request.url.params["per_page"] == "50"
+        assert "after" in request.url.params
+        return httpx.Response(
+            200,
+            json=[
+                {
+                    "id": 123,
+                    "date": "2026-06-10T07:15:00",
+                    "link": "https://cafezinhoeuropa.com/post-teste/",
+                    "title": {"rendered": "T&iacute;tulo <b>teste</b>"},
+                    "excerpt": {"rendered": "<p>Resumo do post.</p>\n"},
+                    "categories": [2],
+                }
+            ],
+        )
+
+    client = httpx.Client(transport=httpx.MockTransport(handler))
+    posts = listar_posts(client, "https://cafezinhoeuropa.com", dias=7)
+    assert posts == [
+        {
+            "id": 123,
+            "date": "2026-06-10T07:15:00",
+            "link": "https://cafezinhoeuropa.com/post-teste/",
+            "titulo": "Título teste",
+            "resumo": "Resumo do post.",
+        }
+    ]

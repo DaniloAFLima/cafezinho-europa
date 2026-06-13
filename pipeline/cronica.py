@@ -1,8 +1,9 @@
 """Coluna semanal 'Cafezinho & Planeta, Urgente!' — listar notícias e agendar a crônica."""
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
+import httpx
 import markdown as _markdown
 from bs4 import BeautifulSoup
 
@@ -34,3 +35,33 @@ def md_para_html(texto_md: str) -> str:
 def _strip_html(html: str) -> str:
     """Remove tags e decodifica entidades (títulos/excerpts vêm em HTML do WP)."""
     return BeautifulSoup(html, "html.parser").get_text()
+
+
+PER_PAGE = 50
+
+
+def listar_posts(client: httpx.Client, base_url: str, *, dias: int = 7) -> list[dict]:
+    """Posts publicados nos últimos `dias` dias, via WP REST pública (sem credenciais)."""
+    after = (datetime.now(timezone.utc) - timedelta(days=dias)).isoformat()
+    resp = client.get(
+        f"{base_url.rstrip('/')}/wp-json/wp/v2/posts",
+        params={
+            "after": after,
+            "per_page": PER_PAGE,
+            "orderby": "date",
+            "order": "desc",
+            "_fields": "id,date,link,title,excerpt,categories",
+        },
+        timeout=30.0,
+    )
+    resp.raise_for_status()
+    return [
+        {
+            "id": p["id"],
+            "date": p["date"],
+            "link": p["link"],
+            "titulo": _strip_html(p["title"]["rendered"]).strip(),
+            "resumo": _strip_html(p["excerpt"]["rendered"]).strip(),
+        }
+        for p in resp.json()
+    ]
