@@ -34,3 +34,6 @@ plugins/cafezinho-weather/composer.lock
 # Local-only docker-compose override (dev port mapping)
 infra/docker-compose.override.yml
 .gstack/
+
+# Marcadores de crônicas agendadas (gerados no servidor após --auto)
+cronicas/*.agendado

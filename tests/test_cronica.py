@@ -3,12 +3,16 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 import json
+from unittest.mock import patch
 
 import httpx
 import pytest
 
-from pipeline.cronica import CronicaError, _strip_html, md_para_html, proximo_domingo, listar_posts, agendar_cronica
-from pipeline.cronica import carregar_config
+from pipeline.cronica import (
+    CronicaError, _strip_html, md_para_html, proximo_domingo,
+    listar_posts, agendar_cronica, carregar_config,
+    extrair_titulo_md, _cmd_auto,
+)
 
 
 def test_proximo_domingo_de_uma_quinta():
@@ -157,3 +161,89 @@ def test_carregar_config_categoria_ausente_e_erro(tmp_path):
     categorias_yaml.write_text('categories:\n  "Europa": 2\n', encoding="utf-8")
     with pytest.raises(CronicaError, match="Inexistente"):
         carregar_config(cronica_yaml, categorias_yaml)
+
+
+# ── --auto ────────────────────────────────────────────────────────────────────
+
+def test_extrair_titulo_md_encontra_h1():
+    md = "# Fique no Seu Lugar!\n\nTexto da crônica."
+    assert extrair_titulo_md(md) == "Fique no Seu Lugar!"
+
+
+def test_extrair_titulo_md_ignora_h2_e_abaixo():
+    md = "## Subtítulo\n\nSem H1 aqui."
+    assert extrair_titulo_md(md) is None
+
+
+def test_extrair_titulo_md_sem_titulo_retorna_none():
+    assert extrair_titulo_md("Texto sem nenhum título.") is None
+
+
+def _setup_auto(tmp_path, monkeypatch):
+    """Monta estrutura de arquivos e env para testes de --auto."""
+    # Pasta de crônicas com um arquivo pendente
+    pasta = tmp_path / "cronicas"
+    pasta.mkdir()
+    (pasta / ".gitkeep").write_text("")
+    md = pasta / "2026-06-15-teste.md"
+    md.write_text("# A Grande Fika\n\nConteúdo da crônica.", encoding="utf-8")
+
+    # Config YAML
+    cfg_dir = tmp_path / "config"
+    cfg_dir.mkdir()
+    (cfg_dir / "cronica.yaml").write_text(
+        'categoria: "Cafezinho & Planeta, Urgente!"\nfeatured_media_id: null\n',
+        encoding="utf-8",
+    )
+    (cfg_dir / "wp_categories.yaml").write_text(
+        'categories:\n  "Cafezinho & Planeta, Urgente!": 42\n',
+        encoding="utf-8",
+    )
+
+    # Patch de caminhos e env
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("WP_USERNAME", "bot")
+    monkeypatch.setenv("WP_APP_PASSWORD", "senha123")
+    return pasta, md
+
+
+def test_auto_agenda_cronica_pendente(tmp_path, monkeypatch):
+    pasta, md = _setup_auto(tmp_path, monkeypatch)
+
+    with patch("pipeline.cronica.agendar_cronica") as mock_ag, \
+         patch("pipeline.cronica.httpx.Client"):
+        mock_ag.return_value = {"id": 99, "link": "https://cafezinhoeuropa.com/?p=99"}
+        result = _cmd_auto("https://cafezinhoeuropa.com")
+
+    assert result == 0
+    assert mock_ag.called
+    _, kwargs = mock_ag.call_args
+    assert kwargs["titulo"] == "A Grande Fika"
+    assert kwargs["categoria_id"] == 42
+    assert (pasta / "2026-06-15-teste.agendado").exists()
+
+
+def test_auto_pula_cronica_ja_agendada(tmp_path, monkeypatch, capsys):
+    pasta, md = _setup_auto(tmp_path, monkeypatch)
+    (pasta / "2026-06-15-teste.agendado").write_text("agendado=2026-06-15T08:00:00Z\n")
+
+    with patch("pipeline.cronica.agendar_cronica") as mock_ag, \
+         patch("pipeline.cronica.httpx.Client"):
+        result = _cmd_auto("https://cafezinhoeuropa.com")
+
+    assert result == 0
+    mock_ag.assert_not_called()
+    assert "[skip]" in capsys.readouterr().out
+
+
+def test_auto_pula_arquivo_sem_titulo(tmp_path, monkeypatch, capsys):
+    pasta, md = _setup_auto(tmp_path, monkeypatch)
+    md.write_text("Sem título H1 aqui.", encoding="utf-8")
+
+    with patch("pipeline.cronica.agendar_cronica") as mock_ag, \
+         patch("pipeline.cronica.httpx.Client"):
+        result = _cmd_auto("https://cafezinhoeuropa.com")
+
+    assert result == 1
+    mock_ag.assert_not_called()
+    assert "sem título" in capsys.readouterr().err

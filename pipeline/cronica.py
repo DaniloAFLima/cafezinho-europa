@@ -127,6 +127,14 @@ def carregar_config(
     return {"categoria_id": categoria_id, "featured_media_id": cfg.get("featured_media_id")}
 
 
+def extrair_titulo_md(texto: str) -> str | None:
+    """Extrai o primeiro H1 (# Título) do Markdown. Retorna None se não encontrar."""
+    for line in texto.splitlines():
+        if line.startswith("# "):
+            return line[2:].strip()
+    return None
+
+
 def _auth_header(username: str, app_password: str) -> str:
     token = base64.b64encode(f"{username}:{app_password}".encode()).decode()
     return f"Basic {token}"
@@ -178,11 +186,69 @@ def _cmd_agendar(base_url: str, arquivo_md: str, titulo: str | None) -> int:
     return 0
 
 
+def _cmd_auto(base_url: str) -> int:
+    """Detecta crônicas em cronicas/*.md sem marcador .agendado e agenda cada uma."""
+    pasta = Path("cronicas")
+    candidatos = sorted(p for p in pasta.glob("*.md") if p.name != ".gitkeep")
+    if not candidatos:
+        print("Nenhuma crônica encontrada em cronicas/")
+        return 0
+
+    cfg = carregar_config()
+    username = os.getenv("WP_USERNAME")
+    app_password = os.getenv("WP_APP_PASSWORD")
+    if not username or not app_password:
+        print("WP_USERNAME/WP_APP_PASSWORD não definidos no .env", file=sys.stderr)
+        return 1
+
+    agendadas = erros = 0
+    for md in candidatos:
+        marcador = md.with_suffix(".agendado")
+        if marcador.exists():
+            print(f"[skip] {md.name} — já agendada")
+            continue
+
+        texto = md.read_text(encoding="utf-8")
+        titulo = extrair_titulo_md(texto)
+        if not titulo:
+            print(f"[erro] {md.name} — sem título H1, pulando", file=sys.stderr)
+            erros += 1
+            continue
+
+        html = md_para_html(texto)
+        quando = proximo_domingo(datetime.now(timezone.utc))
+        try:
+            with httpx.Client() as client:
+                data = agendar_cronica(
+                    client,
+                    base_url=base_url,
+                    auth_header=_auth_header(username, app_password),
+                    titulo=titulo,
+                    html=html,
+                    categoria_id=cfg["categoria_id"],
+                    quando=quando,
+                    featured_media_id=cfg["featured_media_id"],
+                )
+            marcador.write_text(
+                f"agendado={quando:%Y-%m-%dT%H:%M:%S}Z\npost_id={data['id']}\n",
+                encoding="utf-8",
+            )
+            print(f"[ok] {md.name} → post {data['id']} agendado para {quando:%Y-%m-%d %H:%M} UTC")
+            agendadas += 1
+        except CronicaError as exc:
+            print(f"[erro] {md.name} — {exc}", file=sys.stderr)
+            erros += 1
+
+    print(f"\n{agendadas} agendada(s), {erros} erro(s).")
+    return 1 if erros else 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Coluna 'Cafezinho & Planeta, Urgente!'")
     grupo = parser.add_mutually_exclusive_group(required=True)
     grupo.add_argument("--listar", action="store_true", help="Lista os posts da semana")
     grupo.add_argument("--agendar", metavar="ARQUIVO_MD", help="Agenda a crônica para domingo")
+    grupo.add_argument("--auto", action="store_true", help="Detecta e agenda crônicas pendentes em cronicas/")
     parser.add_argument("--dias", type=int, default=7, help="Janela de busca (--listar)")
     parser.add_argument("--titulo", help="Título do post (obrigatório com --agendar)")
     args = parser.parse_args()
@@ -192,6 +258,8 @@ def main() -> int:
 
     if args.listar:
         return _cmd_listar(base_url, args.dias)
+    if args.auto:
+        return _cmd_auto(base_url)
     return _cmd_agendar(base_url, args.agendar, args.titulo)
 
 
