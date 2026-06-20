@@ -3,7 +3,7 @@
 > Arquivo de memória do projeto. Registra o que foi construído, decisões tomadas,
 > incidentes resolvidos e próximos passos. Atualizar a cada sessão de trabalho.
 >
-> **Última atualização:** 2026-06-13
+> **Última atualização:** 2026-06-20
 
 ---
 
@@ -182,32 +182,42 @@ através das lentes das suas culturas. As falas dramatizam as **opiniões do edi
 |---------|--------|
 | `config/cronica_prompt.md` | Prompt mestre com 5 fichas completas, estrutura, regras editoriais |
 | `config/cronica.yaml` | Categoria WP + featured_media_id da coluna |
-| `pipeline/cronica.py` | CLI: `--listar [--dias N]` e `--agendar arquivo.md --titulo "..."` |
-| `tests/test_cronica.py` | 11 testes unitários (55 total no suite), todos passando |
-| `.claude/skills/cronica-da-semana/SKILL.md` | Ritual semanal de 10 passos para sessão Claude Code |
+| `config/wp_categories.yaml` | Mapa categorias→IDs, inclui `"Cafezinho & Planeta, Urgente!": 11` |
+| `pipeline/cronica.py` | CLI: `--listar`, `--agendar`, `--auto` |
+| `tests/test_cronica.py` | 17 testes unitários, todos passando |
+| `run_cronica.sh` | Script do cron de sábado (ativa venv, roda `--auto`, loga) |
 | `cronicas/` | Histórico de edições (`AAAA-MM-DD-slug.md`) |
 | `design/cafezinho-e-planeta-icone.html` | Ícone SVG vetorial (3 variantes: 400px, 200px, 80px) |
-| `cronicas/2026-06-15-fique-no-seu-lugar.md` | 1ª edição — tema: Europa e suas cercas (Suíça, Suécia, Ryanair) |
+
+### Edições publicadas
+
+| Arquivo | Publicação | Tema | WP ID |
+|---------|-----------|------|-------|
+| `cronicas/2026-06-15-fique-no-seu-lugar.md` | 2026-06-15 | Europa e suas cercas (Suíça, Suécia, Ryanair) | 166 |
+| `cronicas/2026-06-22-primeira-semana-de-copa.md` | 2026-06-22 | Copa do Mundo — primeira semana | (agendado pelo cron) |
 
 ### Decisões técnicas
 
 - Agendamento nativo do WP: `status=future` + `date_gmt` → sem cron novo
 - `--listar` usa endpoint público (`GET /wp-json/wp/v2/posts`) — sem credenciais
 - `--agendar` exige `WP_USERNAME` + `WP_APP_PASSWORD` no `.env`
-- `proximo_domingo`: se rodar num domingo, agenda para o seguinte (edição atual já está no ar)
+- `--auto`: detecta `.md` sem `.agendado` correspondente → agenda e cria marcador
+- `proximo_domingo`: se rodar num domingo, agenda para o seguinte
 - Markdown→HTML: biblioteca `markdown==3.7` (instalada no servidor)
+- Fix para post "preso em future": incluir `date_gmt` atual junto com `status=publish` no PATCH
 
-### Pré-requisitos pendentes para agendar a 1ª edição
+### Ritual semanal de produção da crônica
 
-1. **Renovar `WP_APP_PASSWORD`** no painel WordPress (usuário pipeline)
-2. **Criar categoria** "Cafezinho & Planeta, Urgente!" no WP
-3. **Adicionar ID** da nova categoria em `config/wp_categories.yaml`
-4. *(Opcional)* Upload da capa ao WP Media e configurar `featured_media_id` em `config/cronica.yaml`
-5. Rodar:
-   ```
-   python -m pipeline.cronica --agendar cronicas/2026-06-15-fique-no-seu-lugar.md \
-     --titulo "Fique no Seu Lugar! — A Europa Decide Onde Você Pertence"
-   ```
+1. **Sexta-feira** — sessão Claude Code:
+   - `python -m pipeline.cronica --listar` no servidor para ver notícias da semana
+   - Busca complementar via WP REST API: `/wp-json/wp/v2/posts?search=TERMO` para cobertura total
+   - Danilo dá **opiniões brutas** sobre cada notícia (1-3 frases, informal)
+   - Claude transforma as opiniões em **diálogos entre personagens** — não escrever as falas direto
+   - Salvar em `cronicas/AAAA-MM-DD-slug.md` + `git push`
+2. **Sábado 10:00 UTC** — cron no servidor:
+   - `run_cronica.sh` → `git pull` + `python -m pipeline.cronica --auto`
+   - Detecta o `.md` novo, agenda para domingo 08:00 UTC, cria `.agendado`
+3. **Domingo 08:00 UTC** — WordPress publica automaticamente
 
 ---
 
@@ -256,30 +266,76 @@ cd /home/cafezinho/cafezinho-europa && git pull
 
 ---
 
-## Arquitetura atual (v1.1.0)
+## Sessão 8 — Automação da crônica + Edições 001 e 002
+
+### O que foi construído
+
+**`pipeline/cronica.py --auto`**
+- Escaneia `cronicas/*.md` (ignora `.gitkeep`)
+- Pula arquivos com `.agendado` correspondente (idempotência)
+- Extrai título via `extrair_titulo_md()` — busca primeira linha `# H1`
+- Converte para HTML, chama `agendar_cronica()`, grava marcador `filename.agendado`
+- Retorna 0 se sem erros, 1 se algum arquivo falhou
+
+**`run_cronica.sh`** — script do cron, instala em `/home/cafezinho/cafezinho-europa/`
+
+**Crontab no servidor:** `0 10 * * 6` (sábados 10:00 UTC)
+
+**WordPress configurado:**
+- Categoria "Cafezinho & Planeta, Urgente!": ID = 11
+- Usuário `cafezinho-bot` com App Password para o pipeline
+- Credenciais em `/home/cafezinho/cafezinho-europa/.env`
+
+**Fix publicação imediata:** ao publicar post `future` via PATCH, incluir `date_gmt` atual junto com `status=publish`, caso contrário o WP mantém status `future`.
+
+**Edição 001 — "Fique no Seu Lugar!"** (WP ID 166):
+- Publicada imediatamente via PATCH direto na API (o `--auto` rodou no domingo, quando `proximo_domingo` agendaria para daqui 7 dias)
+- Tema: cercas da Europa — imigração Suíça, lei penal Suécia, Ryanair separando famílias
+
+**Edição 002 — "Primeira Semana de Copa"** (agendado para 2026-06-22):
+- `cronicas/2026-06-22-primeira-semana-de-copa.md`
+- Tema: Copa do Mundo — Brasil empata e vence, Suécia goleia, Zbig e Giuseppe sem time
+- Giuseppe: engenheiro italiano, **personagem convidado** desta edição (não fixo)
+  - Argumento cômico recorrente: "Ancelotti é italiano, portanto tecnicamente…"
+  - Zbig interrompe toda vez com "Não."
+- Cafeteira 3000 sofisticada: análise preditiva que chega à definição de vitória depois de 3 dias
+
+### Lições do processo editorial
+
+- Danilo dá **opiniões brutas** (1-3 frases, informal) — Claude converte em diálogos
+- Edição 001 foi considerada "pobre" por ter pouco bate-bola entre personagens
+- Edição 002: mais texto, mais réplicas, Lars fez um discurso, Giuseppe e Zbig formaram dupla cômica
+- Para buscar notícias da semana: `--listar` + busca extra via REST API por palavra-chave
+
+---
+
+## Arquitetura atual (v1.2.0)
 
 ```
 GitHub (85rqmryjgx-create/cafezinho-europa)
-    ↓ git push origin master:main  (do Windows local)
+    ↓ git push origin master  (do Windows local)
     ↓ git pull  (no servidor — /home/cafezinho/cafezinho-europa)
 
 Servidor 167.233.58.224
-├── cron 07:00 UTC
-│   └── run_daily.sh → .venv/bin/activate → python -m pipeline.main
+├── cron 07:00 UTC diário
+│   └── run_daily.sh → python -m pipeline.main
 │       ├── fetcher.py    → RSS europeus
 │       ├── dedupe.py     → SQLite
 │       ├── relevance.py  → top-N
 │       ├── processor.py  → Claude API
 │       └── publisher.py  → WordPress REST API
 │
-├── pipeline/cronica.py (manual, via sessão Claude Code)
-│   ├── --listar   → GET /wp-json/wp/v2/posts (público)
-│   └── --agendar  → POST /wp-json/wp/v2/posts (status=future, domingo 08:00 UTC)
+├── cron 10:00 UTC sábados
+│   └── run_cronica.sh → python -m pipeline.cronica --auto
+│       ├── detecta cronicas/*.md sem .agendado
+│       ├── extrai título H1
+│       ├── POST /wp-json/wp/v2/posts (status=future, próximo domingo 08:00 UTC)
+│       └── cria cronicas/arquivo.agendado (marcador de idempotência)
 │
 └── Docker
     ├── caddy      → cafezinhoeuropa.com (SSL automático)
     ├── wordpress  → tema cafezinho v1.1.0 + plugin cafezinho-weather
-    │   ├── home: hero + grid + sidebar (última crônica)
+    │   ├── home: hero + grid + sidebar (última crônica da categoria 11)
     │   └── bandeiras: FR ✅ SE ✅ DE ✅ ES ✅ IT ✅ UK ✅ EU ✅
     └── mariadb    → banco WordPress
 ```
@@ -288,14 +344,17 @@ Servidor 167.233.58.224
 
 ## Próximos passos
 
-### Bloqueadores (dependem de ação manual no WP)
-- [ ] Renovar `WP_APP_PASSWORD` para o usuário pipeline no painel WordPress
-- [ ] Criar categoria "Cafezinho & Planeta, Urgente!" no WP admin
-- [ ] Adicionar ID da categoria em `config/wp_categories.yaml` + push + pull
-- [ ] Agendar 1ª edição da crônica (rodar `pipeline/cronica.py --agendar`)
+### Fluxo semanal em curso (automático)
+- Toda sexta: sessão Claude Code → escreve crônica → `git push`
+- Sábado 10:00 UTC: cron agenda automaticamente para domingo
+- Domingo 08:00 UTC: WordPress publica
 
 ### Backlog técnico
 - [ ] Phase B do widget de tempo — afinar visual e responsividade
-- [ ] Monitorar runs do pipeline no servidor (`logs/pipeline-*.log`)
+- [ ] Monitorar runs do pipeline no servidor (`logs/cronica-*.log`, `logs/pipeline-*.log`)
 - [ ] Guardar senhas do servidor em password manager
-- [ ] Ideia de logo: iterar em `design/logo-watermark.html` localmente antes de deployar
+- [ ] Ícone/imagem de capa para a categoria "Cafezinho & Planeta, Urgente!" (featured_media_id em `config/cronica.yaml`)
+
+### Personagens convidados a explorar
+- **Giuseppe** (italiano, engenheiro) — funcionou bem na edição 002, pode retornar quando o tema justificar
+- Outros convidados eventuais: decidir a cada semana conforme a pauta
