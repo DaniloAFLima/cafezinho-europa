@@ -1,5 +1,95 @@
 # Cafezinho Europa
 
+## 📌 Overview
+Automated news pipeline that fetches European news, translates and summarizes them into Brazilian Portuguese, and publishes them to a WordPress editorial site. The entire flow runs on a schedule with zero manual intervention.
+
+## 🎯 Business Context
+Built to deliver a daily, curated European news digest in Brazilian Portuguese. The pipeline handles the full content lifecycle — from raw RSS feeds to a published, formatted article — combining automation, AI-powered translation, and editorial quality control.
+
+## ✨ Features
+- **Automated ingestion:** fetches RSS feeds from European sources (configurable via `config/sources.yaml`)
+- **Smart deduplication:** prevents duplicate articles using a SQLite database keyed by URL
+- **Relevance scoring:** selects the top-N articles based on configurable relevance criteria
+- **AI processing:** uses Claude to translate and summarize content into PT-BR
+- **Auto-publishing:** publishes to WordPress via REST API with og:image support
+- **Weekly column:** "Cafezinho & Planeta, Urgente!" — satirical weekly column published every Sunday
+- **Cost control:** daily API cost cap (MAX_DAILY_COST_USD) to manage AI spend
+- **Health monitoring:** ping-based healthchecks for pipeline reliability
+
+## 🛠️ Tech Stack
+- **Language:** Python 3.12
+- **AI Integration:** Anthropic Claude (translation + summarization)
+- **CMS:** WordPress (REST API)
+- **Database:** SQLite (pipeline state) + MariaDB (WordPress)
+- **Infrastructure:** Docker (WordPress + MariaDB + Caddy reverse proxy)
+- **Orchestration:** cron scheduling (daily 07:00 UTC)
+- **Testing:** pytest (Python) + PHPUnit (WordPress plugin)
+
+## 🏗️ Architecture
+
+
+**Pipeline flow:**
+1. Fetch RSS feeds from European sources
+2. Deduplicate by URL (SQLite)
+3. Score and select top-N by relevance
+4. Process with Claude (translate + summarize to PT-BR)
+5. Publish to WordPress via REST API
+
+## 🚀 How to run
+
+### Local development
+```bash
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+cp .env.example .env
+# fill .env with your keys
+
+# Start local WordPress
+cd infra
+echo "WP_DB_PASSWORD=local-dev-password" > .env
+echo "WP_DB_ROOT_PASSWORD=local-dev-root-password" >> .env
+docker compose up -d
+
+Run the pipeline
+
+python -m pipeline.main            # normal mode (publishes)
+python -m pipeline.main --dry-run  # test mode (no publishing)
+
+Run tests
+
+pytest -v
+
+📁 Project structureCódigocafezinho-europa/
+├── pipeline/          # Python pipeline code
+│   ├── main.py        # Orchestrator
+│   ├── fetcher.py     # RSS fetching
+│   ├── dedupe.py      # URL deduplication
+│   ├── relevance.py   # Relevance scoring
+│   ├── processor.py   # Claude integration (translate/summarize)
+│   ├── publisher.py   # WordPress REST API publishing
+│   └── og_image.py    # og:image lookup
+├── plugins/
+│   └── cafezinho-weather/   # WordPress weather plugin
+├── infra/
+│   ├── docker-compose.yml
+│   ├── Caddyfile
+│   └── themes/cafezinho/    # Custom editorial theme
+├── config/
+│   ├── sources.yaml         # RSS sources
+│   ├── relevance.yaml       # Relevance criteria
+│   ├── prompts.yaml         # Claude prompts
+│   └── wp_categories.yaml   # Category → ID mapping
+├── data/
+│   └── cafezinho.db         # SQLite (processed articles)
+├── run_daily.sh             # Cron script
+└── .env                     # Credentials (not committed)👤 AuthorDanilo Lima — LinkedIn · GitHub
+
+👤 Author Danilo Lima — LinkedIn · GitHub
+
+
+# Cafezinho Europa
+
 Pipeline automatizado de notícias da Europa em português do Brasil, com site WordPress editorial.
 
 ---
